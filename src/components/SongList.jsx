@@ -72,7 +72,7 @@ function SongList({ songs }) { // Reçoit 'songs' comme prop
                   <td>{song.tuning}</td>
                   <td>
                     <a href={song.link} target="_blank" rel="noopener noreferrer">
-                      Télécharger
+                      Download
                     </a>
                   </td>
                 </tr>
