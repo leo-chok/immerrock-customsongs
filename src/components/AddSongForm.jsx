@@ -65,7 +65,7 @@ function AddSongForm({ onSongAdded }) { // Reçoit la fonction de rappel comme p
       {formError && <p className="error-message">{formError}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="artist">Artiste:</label>
+          <label htmlFor="artist">Artist:</label>
           <input
             type="text"
             id="artist"
@@ -75,7 +75,7 @@ function AddSongForm({ onSongAdded }) { // Reçoit la fonction de rappel comme p
           />
         </div>
         <div className="form-group">
-          <label htmlFor="title">Titre:</label>
+          <label htmlFor="title">Title:</label>
           <input
             type="text"
             id="title"
@@ -85,7 +85,7 @@ function AddSongForm({ onSongAdded }) { // Reçoit la fonction de rappel comme p
           />
         </div>
         <div className="form-group">
-          <label htmlFor="type">Type de Piste:</label>
+          <label htmlFor="type">Type:</label>
           <input
             type="text"
             id="type"
@@ -95,7 +95,7 @@ function AddSongForm({ onSongAdded }) { // Reçoit la fonction de rappel comme p
           />
         </div>
         <div className="form-group">
-          <label htmlFor="tuning">Accordage:</label>
+          <label htmlFor="tuning">Tuning:</label>
           <input
             type="text"
             id="tuning"
@@ -105,7 +105,7 @@ function AddSongForm({ onSongAdded }) { // Reçoit la fonction de rappel comme p
           />
         </div>
         <div className="form-group">
-          <label htmlFor="link">Lien de Téléchargement:</label>
+          <label htmlFor="link">Download Link:</label>
           <input
             type="url" // Type "url" pour une validation basique du navigateur
             id="link"
@@ -115,7 +115,7 @@ function AddSongForm({ onSongAdded }) { // Reçoit la fonction de rappel comme p
           />
         </div>
         <button type="submit" disabled={submitting}>
-          {submitting ? 'Ajout en cours...' : 'Ajouter la Chanson'}
+          {submitting ? 'Adding...' : 'Add the song'}
         </button>
       </form>
     </div>

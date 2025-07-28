@@ -52,7 +52,7 @@
   color: #333;
 }
 
-h1, h2 {
+h1, h2, h3 {
   color: #007bff; /* Un bleu un peu plus vif pour les titres */
   margin-bottom: 20px;
 }
@@ -61,7 +61,7 @@ h1, h2 {
   margin-top: 30px; /* Plus d'espace au-dessus du tableau */
   padding: 20px;
   background-color: #fcfcfc; /* Un léger fond pour le conteneur */
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Une très légère ombre */
 }
 
@@ -104,6 +104,14 @@ a {
 
 a:hover {
   text-decoration: underline; /* Soulignement au survol */
+}
+
+.app-logo {
+  height: 100px; /* Adapte la hauteur à ton logo, ou utilise max-height */
+  width: auto; /* Garde les proportions de l'image */
+  display: block; /* Pour pouvoir appliquer les marges auto */
+  margin: 20px auto 40px auto; /* Centre le logo et ajoute de l'espace */
+  max-width: 90%; /* S'assure que le logo ne déborde pas sur petits écrans */
 }
 
 /* Styles pour la pagination */
