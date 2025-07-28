@@ -137,3 +137,127 @@ a:hover {
   border-color: #007bff;
   font-weight: bold;
 }
+
+/* Nouveaux styles pour le bouton de bascule du formulaire */
+.form-toggle-section {
+  margin: 30px auto 20px auto; /* Marge au-dessus et en dessous, centré */
+  max-width: 600px; /* Alignée avec la largeur du formulaire */
+  text-align: center; /* Pour centrer le bouton si besoin */
+}
+
+.toggle-form-button {
+  padding: 12px 25px;
+  background-color: #6c757d; /* Un gris neutre */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.toggle-form-button:hover {
+  background-color: #5a6268; /* Gris plus foncé au survol */
+  transform: translateY(-1px); /* Petit effet de soulèvement */
+}
+
+/* Styles pour les messages de succès/erreur (déjà présents, mais rappel) */
+.success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.error-message {
+  color: #dc3545;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #dc3545;
+  background-color: #f8d7da;
+  border-radius: 5px;
+  text-align: center;
+}
+
+
+/* Styles pour le formulaire d'ajout */
+.add-song-form-container {
+  background-color: #eef7ff; /* Fond légèrement bleu pour le formulaire */
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 30px auto; /* Marge et centrage */
+  max-width: 600px; /* Largeur max du formulaire */
+  text-align: left; /* Aligne le texte du formulaire à gauche */
+}
+
+.add-song-form-container h2 {
+  text-align: center; /* Centre le titre du formulaire */
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 18px; /* Espacement entre les groupes label/input */
+}
+
+.form-group label {
+  display: block; /* Chaque label sur une nouvelle ligne */
+  margin-bottom: 8px; /* Espacement entre label et input */
+  font-weight: bold;
+  color: #333;
+}
+
+.form-group input {
+  width: calc(100% - 20px); /* Prend presque toute la largeur avec padding */
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.add-song-form-container button[type="submit"] {
+  display: block; /* Bouton sur une nouvelle ligne */
+  width: 100%; /* Prend toute la largeur */
+  padding: 12px 20px;
+  background-color: #28a745; /* Vert pour le bouton d'ajout */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.add-song-form-container button[type="submit"]:hover:not(:disabled) {
+  background-color: #218838; /* Vert plus foncé au survol */
+}
+
+.add-song-form-container button[type="submit"]:disabled {
+  background-color: #6c757d; /* Gris quand désactivé */
+  cursor: not-allowed;
+}
+
+.success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}

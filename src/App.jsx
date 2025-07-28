@@ -1,32 +1,66 @@
 // src/App.jsx
-import './App.css'
+import { useState, useEffect } from 'react';
+import './App.css';
 import SongList from './components/SongList';
+import AddSongForm from './components/AddSongForm';
 
 function App() {
-  // Générer plus de 50 chansons pour tester la pagination
-  const generateMockSongs = (count) => {
-    const mockSongs = [];
-    for (let i = 1; i <= count; i++) {
-      mockSongs.push({
-        id: i,
-        artist: `Artist ${Math.ceil(i / 10)}`, // Pour avoir des artistes qui se répètent
-        title: `Song Title ${i}`,
-        type: i % 2 === 0 ? 'Lead, Rhythm' : 'Rhythm, Bass',
-        tuning: i % 3 === 0 ? 'Drop D' : 'E Standard',
-        link: `https://drive.google.com/folders/fake_link_${i}`,
-      });
+  const [songs, setSongs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  // Nouvel état pour la visibilité du formulaire
+  const [showAddForm, setShowAddForm] = useState(false); // Initialisé à false pour le cacher par défaut
+
+  const API_URL = 'https://immerrock-customsongs-backend.onrender.com/api/songs';
+
+  const fetchSongs = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(API_URL);
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
+      const data = await response.json();
+      setSongs(data);
+    } catch (err) {
+      console.error("Erreur lors de la récupération des chansons:", err);
+      setError("Impossible de charger les chansons. Veuillez réessayer plus tard.");
+    } finally {
+      setLoading(false);
     }
-    return mockSongs;
   };
 
-  const songs = generateMockSongs(120); // Génère 120 chansons pour avoir 3 pages (2x50 + 1x20)
+  useEffect(() => {
+    fetchSongs();
+  }, []);
+
+  // Fonction pour basculer la visibilité du formulaire
+  const toggleAddForm = () => {
+    setShowAddForm(!showAddForm);
+  };
 
   return (
     <div className="App">
-      <h1>IMMEROCK <br></br>Community Custom Songs</h1>
-      <SongList songs={songs} />
+      <h1>Community Custom Songs</h1>
+
+      <div className="form-toggle-section">
+        <button onClick={toggleAddForm} className="toggle-form-button">
+          {showAddForm ? '▲ Cacher le formulaire d\'ajout' : '▼ Ajouter une Nouvelle Chanson'}
+        </button>
+      </div>
+
+      {/* Rendu conditionnel du formulaire basé sur l'état showAddForm */}
+      {showAddForm && <AddSongForm onSongAdded={fetchSongs} />}
+
+      {loading && <p>Chargement des chansons...</p>}
+      {error && <p className="error-message">{error}</p>}
+
+      {!loading && !error && (
+        <SongList songs={songs} />
+      )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
