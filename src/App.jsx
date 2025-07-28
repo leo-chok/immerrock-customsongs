@@ -52,7 +52,7 @@ function App() {
         className="app-logo"
         alt="IMMERROCK Community Custom Songs Logo"
       />{" "}
-      <h2>Community Custom Songs</h2>
+      <h2>🤘 Community Custom Songs 🤘</h2>
       <div className="form-toggle-section">
         <button onClick={toggleAddForm} className="toggle-form-button">
           {showAddForm

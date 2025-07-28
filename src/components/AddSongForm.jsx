@@ -60,7 +60,7 @@ function AddSongForm({ onSongAdded }) { // Reçoit la fonction de rappel comme p
 
   return (
     <div className="add-song-form-container">
-      <h2>Ajouter une Nouvelle Chanson</h2>
+      <h2>Add a new song 🤘</h2>
       {formSuccess && <p className="success-message">{formSuccess}</p>}
       {formError && <p className="error-message">{formError}</p>}
       <form onSubmit={handleSubmit}>
