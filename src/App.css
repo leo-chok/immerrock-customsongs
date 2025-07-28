@@ -1,0 +1,139 @@
+/* src/App.css */
+
+/* Styles par défaut de Vite / React (laisse-les ou supprime-les si tu veux) */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+/* NOUVEAUX STYLES CI-DESSOUS pour le tableau et la pagination */
+
+.App {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+h1, h2 {
+  color: #007bff; /* Un bleu un peu plus vif pour les titres */
+  margin-bottom: 20px;
+}
+
+.song-list-container {
+  margin-top: 30px; /* Plus d'espace au-dessus du tableau */
+  padding: 20px;
+  background-color: #fcfcfc; /* Un léger fond pour le conteneur */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Une très légère ombre */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; /* Permet aux bordures de se "coller" */
+  margin-top: 20px; /* Plus d'espace au-dessus du tableau */
+  margin-bottom: 20px; /* Plus d'espace sous le tableau */
+}
+
+th, td {
+  padding: 12px 15px; /* Plus d'espace interne dans les cellules */
+  text-align: left;
+  border: 1px solid rgba(220, 220, 220, 0.6); /* Bordures très légères */
+}
+
+th {
+  background-color: #e9ecef; /* Couleur de fond pour les en-têtes */
+  font-weight: bold;
+  cursor: pointer; /* Indique que l'en-tête est cliquable */
+  transition: background-color 0.2s ease;
+}
+
+th:hover {
+  background-color: #dee2e6; /* Changement de couleur au survol */
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2; /* Couleur de fond légère pour les lignes paires */
+}
+
+tr:hover {
+  background-color: #eef; /* Effet de survol sur les lignes */
+}
+
+a {
+  color: #007bff; /* Couleur des liens */
+  text-decoration: none; /* Pas de soulignement par défaut */
+}
+
+a:hover {
+  text-decoration: underline; /* Soulignement au survol */
+}
+
+/* Styles pour la pagination */
+.pagination {
+  margin-top: 25px; /* Plus d'espace au-dessus des boutons de pagination */
+  display: flex; /* Aligne les boutons en ligne */
+  justify-content: center; /* Centre les boutons */
+  flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si l'écran est petit */
+  gap: 10px; /* Espacement entre les boutons */
+}
+
+.pagination button {
+  padding: 10px 15px; /* Plus grand padding pour les boutons */
+  border: 1px solid #007bff; /* Bordure bleue */
+  border-radius: 5px; /* Bords légèrement arrondis */
+  background-color: #fff;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.pagination button:hover {
+  background-color: #e7f3ff; /* Léger fond bleu au survol */
+  border-color: #0056b3;
+}
+
+.pagination button.active {
+  background-color: #007bff; /* Bouton actif en bleu plein */
+  color: white;
+  border-color: #007bff;
+  font-weight: bold;
+}
