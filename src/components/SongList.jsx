@@ -47,20 +47,20 @@ function SongList({ songs }) { // Reçoit 'songs' comme prop
 
   return (
     <div className="song-list-container">
-      <h2>Liste des Custom Songs ({songs.length} au total)</h2> {/* Afficher le total global */}
+      <h2>List of Custom Songs ({songs.length} songs already !)</h2>
 
-      {songs.length === 0 && <p>Aucune chanson n'est disponible pour le moment. Ajoutez-en une !</p>}
+      {songs.length === 0 && <p>No songs for this moment, add one !</p>}
 
       {songs.length > 0 && ( // N'affiche le tableau que s'il y a des chansons
         <>
           <table>
             <thead>
               <tr>
-                <th onClick={() => handleSort('artist')}>Artiste {sortColumn === 'artist' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
-                <th onClick={() => handleSort('title')}>Titre {sortColumn === 'title' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
-                <th onClick={() => handleSort('type')}>Type de Piste {sortColumn === 'type' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
-                <th onClick={() => handleSort('tuning')}>Accordage {sortColumn === 'tuning' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
-                <th>Lien de Téléchargement</th>
+                <th onClick={() => handleSort('artist')}>Artists {sortColumn === 'artist' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
+                <th onClick={() => handleSort('title')}>Titles {sortColumn === 'title' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
+                <th onClick={() => handleSort('type')}>Type  {sortColumn === 'type' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
+                <th onClick={() => handleSort('tuning')}>Tuning {sortColumn === 'tuning' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
+                <th>Download Links</th>
               </tr>
             </thead>
             <tbody>
