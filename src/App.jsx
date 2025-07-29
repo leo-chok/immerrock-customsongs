@@ -9,8 +9,8 @@ function App() {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // Nouvel état pour la visibilité du formulaire
-  const [showAddForm, setShowAddForm] = useState(false); // Initialisé à false pour le cacher par défaut
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(''); 
 
   const API_URL =
     "https://immerrock-customsongs-backend.onrender.com/api/songs";
@@ -44,6 +44,23 @@ function App() {
     setShowAddForm(!showAddForm);
   };
 
+    // Fonction pour gérer le changement de la barre de recherche
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+   // Logique de filtrage des chansons
+  const filteredSongs = songs.filter(song => {
+    // Convertir la requête de recherche et les valeurs des chansons en minuscules pour une recherche insensible à la casse
+    const query = searchQuery.toLowerCase();
+    return (
+      song.artist.toLowerCase().includes(query) ||
+      song.title.toLowerCase().includes(query) ||
+      song.type.toLowerCase().includes(query) ||
+      song.tuning.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className="App">
       <image></image>
@@ -53,6 +70,10 @@ function App() {
         alt="IMMERROCK Community Custom Songs Logo"
       />{" "}
       <h2>🤘 Community Custom Songs 🤘</h2>
+
+      
+
+
       <div className="form-toggle-section">
         <button onClick={toggleAddForm} className="toggle-form-button">
           {showAddForm
@@ -62,9 +83,21 @@ function App() {
       </div>
       {/* Rendu conditionnel du formulaire basé sur l'état showAddForm */}
       {showAddForm && <AddSongForm onSongAdded={fetchSongs} />}
-      {loading && <p>Loading ...</p>}
+
+      <div className="search-bar-container"> {/* Nouveau conteneur pour la barre de recherche */}
+        <input
+          type="text"
+          placeholder="Search by artist, song ..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="search-input"
+        />
+      </div>
+
+
+      {loading && <h2>Fetching database ...</h2>}
       {error && <p className="error-message">{error}</p>}
-      {!loading && !error && <SongList songs={songs} />}
+      {!loading && !error && <SongList songs={filteredSongs} />}
       <div>
       <h3>Made by leochok</h3>
       </div>

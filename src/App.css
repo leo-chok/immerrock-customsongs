@@ -114,6 +114,29 @@ a:hover {
   max-width: 90%; /* S'assure que le logo ne déborde pas sur petits écrans */
 }
 
+/* Styles pour la barre de recherche */
+.search-bar-container {
+  margin: 25px auto; /* Espacement autour de la barre de recherche, centré */
+  max-width: 600px; /* Aligné avec la largeur du formulaire */
+  text-align: center;
+}
+
+.search-input {
+  width: calc(100% - 40px); /* Ajuste la largeur pour laisser de l'espace pour le padding */
+  padding: 12px 20px;
+  font-size: 1.1em;
+  border: 1px solid #ced4da;
+  border-radius: 25px; /* Bords bien arrondis */
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* Légère ombre */
+}
+
+.search-input:focus {
+  border-color: #007bff; /* Bordure bleue au focus */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Ombre bleue au focus */
+}
+
 /* Styles pour la pagination */
 .pagination {
   margin-top: 25px; /* Plus d'espace au-dessus des boutons de pagination */
