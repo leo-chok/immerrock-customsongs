@@ -1,27 +1,49 @@
 // src/components/SongList.jsx
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import SongCard from './SongCard';
+import './SongList.css';
 
-import { useState } from 'react'; // Plus besoin de useEffect ici
-// import './../App.css'; // Pas besoin si App.css est importé dans App.jsx et couvre tout le DOM
-
-function SongList({ songs }) { // Reçoit 'songs' comme prop
+function SongList({ songs, onSongUpdated }) {
   const [currentPage, setCurrentPage] = useState(1);
   const songsPerPage = 20;
   const [sortColumn, setSortColumn] = useState('artist');
   const [sortDirection, setSortDirection] = useState('asc');
 
-  // Logique de tri (reste la même)
   const sortedSongs = [...songs].sort((a, b) => {
     if (!sortColumn) return 0;
 
     const aValue = String(a[sortColumn]).toLowerCase();
     const bValue = String(b[sortColumn]).toLowerCase();
 
+    // Ajout de la gestion du tri numérique pour les votes/downloads si on les trie
+    if (sortColumn === 'upvotes' || sortColumn === 'downloads') {
+        if (sortDirection === 'asc') {
+            return a[sortColumn] - b[sortColumn];
+        } else {
+            return b[sortColumn] - a[sortColumn];
+        }
+    }
+
     if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
     if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
     return 0;
   });
 
-  const handleSort = (column) => {
+  // Cette fonction est pour les <select>
+  const handleSortChange = (e) => {
+    const newSortColumn = e.target.value;
+    if (newSortColumn === sortColumn) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(newSortColumn);
+      setSortDirection('asc');
+    }
+    setCurrentPage(1);
+  };
+
+  // Nouvelle fonction pour le tri via clic sur les "en-têtes" simulées
+  const handleHeaderSort = (column) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
@@ -31,7 +53,6 @@ function SongList({ songs }) { // Reçoit 'songs' comme prop
     setCurrentPage(1);
   };
 
-  // Logique de pagination (reste la même)
   const indexOfLastSong = currentPage * songsPerPage;
   const indexOfFirstSong = indexOfLastSong - songsPerPage;
   const currentSongs = sortedSongs.slice(indexOfFirstSong, indexOfLastSong);
@@ -47,38 +68,40 @@ function SongList({ songs }) { // Reçoit 'songs' comme prop
 
   return (
     <div className="song-list-container">
-      <h2>List of Custom Songs ({songs.length} songs already !)</h2>
+      <h2> {songs.length} songs found.</h2>
 
-      {songs.length === 0 && <p>No songs for this moment, add one !</p>}
 
-      {songs.length > 0 && ( // N'affiche le tableau que s'il y a des chansons
+      {songs.length === 0 && <p>At this moment no song in the database, add one !</p>}
+
+      {songs.length > 0 && (
         <>
-          <table>
-            <thead>
-              <tr>
-                <th onClick={() => handleSort('artist')}>Artists {sortColumn === 'artist' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
-                <th onClick={() => handleSort('title')}>Titles {sortColumn === 'title' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
-                <th onClick={() => handleSort('type')}>Type  {sortColumn === 'type' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
-                <th onClick={() => handleSort('tuning')}>Tuning {sortColumn === 'tuning' && (sortDirection === 'asc' ? '▲' : '▼')}</th>
-                <th>Download Links</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentSongs.map((song) => (
-                <tr key={song._id}>
-                  <td>{song.artist}</td>
-                  <td>{song.title}</td>
-                  <td>{song.type}</td>
-                  <td>{song.tuning}</td>
-                  <td>
-                    <a href={song.link} target="_blank" rel="noopener noreferrer">
-                      Download
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                <div className="table-header-row">
+                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('artist')}>
+                        Artist {sortColumn === 'artist' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </div>
+                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('title')}>
+                        Title {sortColumn === 'title' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </div>
+                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('type')}>
+                        Arrangement {sortColumn === 'type' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </div>
+                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('tuning')}>
+                        Tuning {sortColumn === 'tuning' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </div>
+                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('upvotes')}>
+                        Votes {sortColumn === 'upvotes' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </div>
+                    <div className="table-header-cell">Link</div>
+                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('downloads')}>
+                       Downloads {sortColumn === 'downloads' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </div>
+                </div>
+
+                <div className="song-cards-grid">
+                    {currentSongs.map(song => (
+                        <SongCard key={song._id} song={song} onSongUpdated={onSongUpdated} />
+                    ))}
+                </div>
 
           <div className="pagination">
             {pageNumbers.map((number) => (
@@ -96,5 +119,20 @@ function SongList({ songs }) { // Reçoit 'songs' comme prop
     </div>
   );
 }
+
+SongList.propTypes = {
+  songs: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    artist: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    tuning: PropTypes.string.isRequired,
+    link: PropTypes.string.isRequired,
+    upvotes: PropTypes.number,
+    downvotes: PropTypes.number,
+    downloads: PropTypes.number,
+  })).isRequired,
+  onSongUpdated: PropTypes.func.isRequired,
+};
 
 export default SongList;

@@ -49,6 +49,14 @@ function App() {
     setSearchQuery(e.target.value);
   };
 
+  const handleSongUpdated = (updatedSong) => {
+    setSongs(prevSongs => 
+      prevSongs.map(song => 
+        song._id === updatedSong._id ? updatedSong : song
+      )
+    );
+  };
+
    // Logique de filtrage des chansons
   const filteredSongs = songs.filter(song => {
     // Convertir la requête de recherche et les valeurs des chansons en minuscules pour une recherche insensible à la casse
@@ -97,7 +105,7 @@ function App() {
 
       {loading && <h2>Fetching database ...</h2>}
       {error && <p className="error-message">{error}</p>}
-      {!loading && !error && <SongList songs={filteredSongs} />}
+      {!loading && !error && <SongList songs={filteredSongs} onSongUpdated={handleSongUpdated}/>}
       <div>
       <h3>Made by leochok</h3>
       </div>
