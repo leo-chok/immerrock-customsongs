@@ -1,10 +1,10 @@
+// src/components/SongCard.jsx
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './SongCard.css';
 
 function SongCard({ song, onSongUpdated }) {
   const API_URL = 'https://immerrock-customsongs-backend.onrender.com/api/songs';
-  // const API_URL = 'http://localhost:5000/api/songs';
 
   const [hasVoted, setHasVoted] = useState(false);
   const [votedType, setVotedType] = useState(null);
@@ -85,19 +85,19 @@ function SongCard({ song, onSongUpdated }) {
   return (
     <div className="song-card table-row">
       <div className="table-cell date-cell">
-          {formatDate(song.createdAt)}
+          <span className="cell-content" title={formatDate(song.createdAt)}>{formatDate(song.createdAt)}</span>
       </div>
       <div className="table-cell artist-cell">
-          {song.artist}
+          <span className="cell-content" title={song.artist}>{song.artist}</span>
       </div>
       <div className="table-cell title-cell">
-          {song.title}
+          <span className="cell-content" title={song.title}>{song.title}</span>
       </div>
       <div className="table-cell type-cell">
-          {song.type}
+          <span className="cell-content" title={song.type}>{song.type}</span>
       </div>
       <div className="table-cell tuning-cell">
-          {song.tuning}
+          <span className="cell-content" title={song.tuning}>{song.tuning}</span>
       </div>
       <div className="table-cell votes-cell">
           <div className="vote-section">
@@ -124,7 +124,7 @@ function SongCard({ song, onSongUpdated }) {
           </button>
       </div>
       <div className="table-cell downloads-count-cell">
-          {song.downloads}
+          <span className="cell-content" title={song.downloads}>{song.downloads}</span>
       </div>
     </div>
   );

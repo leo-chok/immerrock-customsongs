@@ -1,3 +1,7 @@
+/*
+Ce fichier contient les styles pour les cartes individuelles
+qui sont affichées comme des lignes de tableau.
+*/
 .song-card.table-row {
   background-color: #ffffff;
   border: none;
@@ -8,7 +12,7 @@
   align-items: center;
   transition: background-color 0.2s ease;
   min-height: auto;
-  display: contents;
+  display: contents; /* Permet aux enfants de s'aligner directement dans la grille du parent */
 }
 
 .song-card.table-row:first-child {
@@ -23,7 +27,7 @@
 }
 
 .song-card.table-row:hover {
-  background-color: #f7f7f7;
+  background-color: #e5f2fe;
   transform: none;
   box-shadow: none;
 }
@@ -31,9 +35,37 @@
 .table-cell {
   padding: 12px 15px;
   text-align: left;
+  display: flex;
+  align-items: center;
+  overflow: hidden; /* C'est la propriété clé pour cacher le texte qui dépasse */
+}
+
+/* Le conteneur de texte qui sera animé */
+.cell-content {
+  display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
+  cursor: default; /* Change le curseur pour indiquer qu'il n'est pas cliquable */
+}
+
+/* Crée l'animation de défilement horizontal */
+@keyframes scrollText {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-200px);
+  }
+}
+
+/* Applique l'animation au survol de la cellule */
+.artist-cell:hover .cell-content,
+.title-cell:hover .cell-content,
+.type-cell:hover .cell-content {
+  animation: scrollText 5s linear;
+  overflow: visible;
 }
 
 .song-card h3,
