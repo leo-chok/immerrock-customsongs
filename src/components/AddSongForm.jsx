@@ -1,58 +1,74 @@
-// src/components/AddSongForm.jsx
-
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
-function AddSongForm({ onSongAdded }) { // Reçoit la fonction de rappel comme prop
+function AddSongForm({ onSongAdded }) {
   const [artist, setArtist] = useState('');
   const [title, setTitle] = useState('');
-  const [type, setType] = useState('');
+  const [type, setType] = useState([]);
   const [tuning, setTuning] = useState('');
   const [link, setLink] = useState('');
-  const [submitting, setSubmitting] = useState(false); // Pour désactiver le bouton pendant l'envoi
-  const [formError, setFormError] = useState(null); // Pour les erreurs du formulaire
-  const [formSuccess, setFormSuccess] = useState(null); // Pour le message de succès
+  const [password, setPassword] = useState(''); // <-- NOUVEL ÉTAT
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState(null);
+  const [formSuccess, setFormSuccess] = useState(null);
 
   const API_URL = 'https://immerrock-customsongs-backend.onrender.com/api/songs';
 
+  const trackTypes = ['Lead', 'Rhythm', 'Bass', 'Acoustic'];
+  const tuningOptions = [
+    'E Standard', 'Drop D', 'Eb Standard', 'Drop C', 'D Standard', 'Drop B', 'DADG', 'B Standard'
+  ];
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setType(prevTypes => 
+      checked 
+        ? [...prevTypes, value] 
+        : prevTypes.filter(t => t !== value)
+    );
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Empêche le rechargement de la page par défaut du formulaire
+    e.preventDefault();
     setSubmitting(true);
     setFormError(null);
     setFormSuccess(null);
 
-    const newSong = { artist, title, type, tuning, link };
+    const formattedType = type.join(', ');
+
+    const newSong = { artist, title, type: formattedType, tuning, link, password }; // <-- AJOUT DU MOT DE PASSE
 
     try {
       const response = await fetch(API_URL, {
-        method: 'POST', // Méthode HTTP POST
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // Indique que le corps de la requête est du JSON
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newSong), // Convertit l'objet JS en chaîne JSON
+        body: JSON.stringify(newSong),
       });
 
       if (!response.ok) {
-        const errorData = await response.json(); // Tente de lire le message d'erreur du backend
-        throw new Error(errorData.message || `Erreur HTTP: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.message || `HTTP Error: ${response.status}`);
       }
 
       const addedSong = await response.json();
-      setFormSuccess(`Chanson "${addedSong.title}" ajoutée avec succès !`);
-      // Réinitialiser le formulaire
+      setFormSuccess(`Song "${addedSong.title}" added successfully!`);
+
       setArtist('');
       setTitle('');
-      setType('');
+      setType([]);
       setTuning('');
       setLink('');
+      setPassword(''); // <-- Réinitialise le champ après envoi
 
-      // Appeler la fonction de rappel pour rafraîchir la liste des chansons dans App.jsx
       if (onSongAdded) {
         onSongAdded();
       }
 
     } catch (err) {
-      console.error("Erreur lors de l'ajout de la chanson:", err);
-      setFormError(err.message || "Erreur lors de l'ajout de la chanson. Veuillez réessayer.");
+      console.error("Error adding song:", err);
+      setFormError(err.message || "Error adding song. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -60,7 +76,7 @@ function AddSongForm({ onSongAdded }) { // Reçoit la fonction de rappel comme p
 
   return (
     <div className="add-song-form-container">
-      <h2>Add a new song 🤘</h2>
+      <h2>Add a New Song</h2>
       {formSuccess && <p className="success-message">{formSuccess}</p>}
       {formError && <p className="error-message">{formError}</p>}
       <form onSubmit={handleSubmit}>
@@ -84,42 +100,67 @@ function AddSongForm({ onSongAdded }) { // Reçoit la fonction de rappel comme p
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="type">Type:</label>
-          <input
-            type="text"
-            id="type"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            required
-          />
+        <div className="form-group checkbox-group">
+          <label>Track Type(s):</label>
+          <div className="checkbox-options">
+            {trackTypes.map(trackType => (
+              <div key={trackType}>
+                <input
+                  type="checkbox"
+                  id={trackType}
+                  value={trackType}
+                  checked={type.includes(trackType)}
+                  onChange={handleCheckboxChange}
+                />
+                <label htmlFor={trackType}>{trackType}</label>
+              </div>
+            ))}
+          </div>
         </div>
         <div className="form-group">
           <label htmlFor="tuning">Tuning:</label>
-          <input
-            type="text"
+          <select
             id="tuning"
             value={tuning}
             onChange={(e) => setTuning(e.target.value)}
             required
-          />
+          >
+            <option value="">Select a tuning...</option>
+            {tuningOptions.map(opt => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="link">Download Link:</label>
           <input
-            type="url" // Type "url" pour une validation basique du navigateur
+            type="url"
             id="link"
             value={link}
             onChange={(e) => setLink(e.target.value)}
             required
           />
         </div>
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password" // <-- type="password" cache les caractères
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
         <button type="submit" disabled={submitting}>
-          {submitting ? 'Adding...' : 'Add the song'}
+          {submitting ? 'Adding...' : 'Add Song'}
         </button>
       </form>
     </div>
   );
 }
+
+AddSongForm.propTypes = {
+  onSongAdded: PropTypes.func.isRequired,
+};
 
 export default AddSongForm;

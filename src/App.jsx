@@ -107,7 +107,7 @@ function App() {
       {error && <p className="error-message">{error}</p>}
       {!loading && !error && <SongList songs={filteredSongs} onSongUpdated={handleSongUpdated}/>}
       <div>
-      <h3>Made by leochok</h3>
+      <h2>Made by leochok</h2>
       </div>
     </div>
   );

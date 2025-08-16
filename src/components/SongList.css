@@ -1,85 +1,88 @@
-/* src/components/SongList.css */
-
-/* Styles pour le conteneur principal de la liste des chansons */
 .song-list-container {
-  margin-top: 50px; 
+  margin-top: 30px; 
   padding: 20px;
   background-color: #fcfcfc;
-  border-radius: 15px;
+  border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   margin-bottom: 20px;
-  width: 100%; /* Prend 90% de la largeur du parent */
-  max-width: 100%; /* Limite la largeur max sur les très grands écrans */
-  margin-left: auto; /* Centre le conteneur */
-  margin-right: auto; /* Centre le conteneur */
-  /* Ou utiliser le raccourci pour centrer : margin: 30px auto 20px auto; */
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.song-cards-grid {
+.sort-controls {
+  display: none;
+}
+
+.table-header-row,
+.song-cards-grid > .table-row {
   display: grid;
-  grid-template-columns: 1fr; /* Une seule colonne pour les "cartes-lignes" */
-  gap: 0; /* Pas d'espace entre les "lignes" */
-  padding: 0; /* Pas de padding pour coller les lignes */
-  border: 1px solid #e0e0e0; /* Bordure externe du "tableau" */
-  border-radius: 8px;
-  overflow: hidden; /* Pour que les coins soient bien arrondis avec la bordure */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Légère ombre pour le tableau */
+  grid-template-columns: 150px 150px 150px 150px 150px 150px 150px 150px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-/* Styles pour la ligne d'en-tête simulée */
 .table-header-row {
-  display: flex; /* Utilise flexbox pour aligner les cellules */
   background-color: #e9ecef;
   font-weight: bold;
-  border-bottom: 1px solid #e0e0e0; /* Bordure sous l'en-tête */
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  width: 100%;
 }
 
-.table-header-cell {
+.table-header-cell,
+.table-cell {
   padding: 12px 15px;
   text-align: left;
-  flex: 1; /* Par défaut, les cellules prennent de l'espace */
-  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: flex; /* Permet d'aligner le texte et la flèche */
+  display: flex;
   align-items: center;
-  justify-content: flex-start; /* Aligne le contenu à gauche */
 }
 
 .table-header-cell.sortable {
-    cursor: pointer;
-}
-
-.table-header-cell.sortable span.sort-arrow { /* Pour la flèche */
-    margin-left: 5px; /* Petit espace entre le texte et la flèche */
-    width: 10px; /* Largeur fixe pour la flèche pour éviter les décalages */
-    display: inline-block; /* Pour que la largeur fixe s'applique */
-    text-align: center; /* Centre la flèche dans son espace */
+  cursor: pointer;
 }
 
 .table-header-cell.sortable:hover {
-    background-color: #dee2e6;
+  background-color: #dee2e6;
 }
 
-/* Répartition des colonnes */
-.table-header-cell:nth-child(1) { flex: 2; } /* Artiste */
-.table-header-cell:nth-child(2) { flex: 3; } /* Titre */
-.table-header-cell:nth-child(3) { flex: 1.5; } /* Type */
-.table-header-cell:nth-child(4) { flex: 1.5; } /* Accordage */
-.table-header-cell:nth-child(5) { flex: 1.5; } /* Votes */
-.table-header-cell:nth-child(6) { flex: 1.5; } /* Télécharger (action) */
-.table-header-cell:nth-child(7) { flex: 1; } /* Nbre DL */
+.sort-arrow {
+  margin-left: 5px;
+  width: 10px;
+  display: inline-block;
+  text-align: center;
+}
 
-/* Quelques ajustements pour les petits écrans - les en-têtes pourraient être masqués */
+.table-header-cell:nth-child(6),
+.table-cell.votes-cell {
+  justify-content: center;
+}
+.table-header-cell:nth-child(7),
+.table-cell.download-action-cell {
+  justify-content: center;
+}
+.table-header-cell:nth-child(8),
+.table-cell.downloads-count-cell {
+  justify-content: center;
+}
+
 @media (max-width: 768px) {
-    .table-header-row {
-        display: none; /* Cache les en-têtes sur les petits écrans, les cartes seront plus individuelles */
-    }
-    .song-cards-grid {
-        border: none; /* Pas de bordure générale */
-        box-shadow: none; /* Pas d'ombre générale */
-    }
+  .table-header-row {
+    display: none;
+  }
+  .song-cards-grid {
+    border: none;
+    box-shadow: none;
+  }
+  .song-list-container {
+    width: 100%;
+    padding: 10px;
+  }
+  .table-header-row,
+  .song-cards-grid > .table-row {
+    grid-template-columns: 1fr;
+  }
 }

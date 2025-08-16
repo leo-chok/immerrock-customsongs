@@ -1,4 +1,3 @@
-// src/components/SongList.jsx
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import SongCard from './SongCard';
@@ -7,16 +6,25 @@ import './SongList.css';
 function SongList({ songs, onSongUpdated }) {
   const [currentPage, setCurrentPage] = useState(1);
   const songsPerPage = 20;
-  const [sortColumn, setSortColumn] = useState('artist');
-  const [sortDirection, setSortDirection] = useState('asc');
+  // Assure-toi que l'état initial est bien 'createdAt' et 'desc'
+  const [sortColumn, setSortColumn] = useState('createdAt');
+  const [sortDirection, setSortDirection] = useState('desc');
 
   const sortedSongs = [...songs].sort((a, b) => {
     if (!sortColumn) return 0;
 
-    const aValue = String(a[sortColumn]).toLowerCase();
-    const bValue = String(b[sortColumn]).toLowerCase();
-
-    // Ajout de la gestion du tri numérique pour les votes/downloads si on les trie
+    // Logique de tri pour la date
+    if (sortColumn === 'createdAt') {
+      const aDate = new Date(a.createdAt);
+      const bDate = new Date(b.createdAt);
+      if (sortDirection === 'asc') {
+        return aDate - bDate;
+      } else {
+        return bDate - aDate;
+      }
+    }
+    
+    // Logique de tri pour les nombres (votes, downloads)
     if (sortColumn === 'upvotes' || sortColumn === 'downloads') {
         if (sortDirection === 'asc') {
             return a[sortColumn] - b[sortColumn];
@@ -25,30 +33,22 @@ function SongList({ songs, onSongUpdated }) {
         }
     }
 
+    // Logique de tri pour les chaînes de caractères (artist, title, etc.)
+    const aValue = String(a[sortColumn]).toLowerCase();
+    const bValue = String(b[sortColumn]).toLowerCase();
+
     if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
     if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
     return 0;
   });
 
-  // Cette fonction est pour les <select>
-  const handleSortChange = (e) => {
-    const newSortColumn = e.target.value;
-    if (newSortColumn === sortColumn) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortColumn(newSortColumn);
-      setSortDirection('asc');
-    }
-    setCurrentPage(1);
-  };
-
-  // Nouvelle fonction pour le tri via clic sur les "en-têtes" simulées
+  // Cette fonction gère le clic sur les en-têtes de colonnes
   const handleHeaderSort = (column) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
       setSortColumn(column);
-      setSortDirection('asc');
+      setSortDirection(column === 'createdAt' || column === 'upvotes' || column === 'downloads' ? 'desc' : 'asc');
     }
     setCurrentPage(1);
   };
@@ -69,39 +69,39 @@ function SongList({ songs, onSongUpdated }) {
   return (
     <div className="song-list-container">
       <h2> {songs.length} songs found.</h2>
-
-
-      {songs.length === 0 && <p>At this moment no song in the database, add one !</p>}
-
+      
       {songs.length > 0 && (
         <>
-                <div className="table-header-row">
-                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('artist')}>
-                        Artist {sortColumn === 'artist' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
-                    </div>
-                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('title')}>
-                        Title {sortColumn === 'title' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
-                    </div>
-                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('type')}>
-                        Arrangement {sortColumn === 'type' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
-                    </div>
-                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('tuning')}>
-                        Tuning {sortColumn === 'tuning' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
-                    </div>
-                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('upvotes')}>
-                        Votes {sortColumn === 'upvotes' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
-                    </div>
-                    <div className="table-header-cell">Link</div>
-                    <div className="table-header-cell sortable" onClick={() => handleHeaderSort('downloads')}>
-                       Downloads {sortColumn === 'downloads' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
-                    </div>
-                </div>
+          <div className="table-header-row">
+            <div className="table-header-cell sortable" onClick={() => handleHeaderSort('createdAt')}>
+              Added {sortColumn === 'createdAt' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+            </div>
+            <div className="table-header-cell sortable" onClick={() => handleHeaderSort('artist')}>
+              Artist {sortColumn === 'artist' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+            </div>
+            <div className="table-header-cell sortable" onClick={() => handleHeaderSort('title')}>
+              Title {sortColumn === 'title' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+            </div>
+            <div className="table-header-cell sortable" onClick={() => handleHeaderSort('type')}>
+              Type {sortColumn === 'type' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+            </div>
+            <div className="table-header-cell sortable" onClick={() => handleHeaderSort('tuning')}>
+              Tuning {sortColumn === 'tuning' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+            </div>
+            <div className="table-header-cell sortable" onClick={() => handleHeaderSort('upvotes')}>
+              Votes {sortColumn === 'upvotes' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+            </div>
+            <div className="table-header-cell">Download</div>
+            <div className="table-header-cell sortable" onClick={() => handleHeaderSort('downloads')}>
+              DL Count {sortColumn === 'downloads' && <span className="sort-arrow">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+            </div>
+          </div>
 
-                <div className="song-cards-grid">
-                    {currentSongs.map(song => (
-                        <SongCard key={song._id} song={song} onSongUpdated={onSongUpdated} />
-                    ))}
-                </div>
+          <div className="song-cards-grid">
+            {currentSongs.map(song => (
+              <SongCard key={song._id} song={song} onSongUpdated={onSongUpdated} />
+            ))}
+          </div>
 
           <div className="pagination">
             {pageNumbers.map((number) => (
@@ -131,6 +131,7 @@ SongList.propTypes = {
     upvotes: PropTypes.number,
     downvotes: PropTypes.number,
     downloads: PropTypes.number,
+    createdAt: PropTypes.string,
   })).isRequired,
   onSongUpdated: PropTypes.func.isRequired,
 };

@@ -1,112 +1,96 @@
-/* src/App.css */
-
-/* Styles par défaut de Vite / React (laisse-les ou supprime-les si tu veux) */
 #root {
-  max-width: 100vw;
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 2rem;
   text-align: center;
 }
 
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
 
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
 
+.card {
+  padding: 2em;
+}
 
+.read-the-docs {
+  color: #888;
+}
 
 /* NOUVEAUX STYLES CI-DESSOUS pour le tableau et la pagination */
-
 .App {
   font-family: Arial, sans-serif;
   color: #333;
 }
 
-h1, h2, h3 {
-  color: #007bff; /* Un bleu un peu plus vif pour les titres */
+h1, h2 {
+  color: #007bff;
   margin-bottom: 20px;
 }
 
-
-a {
-  color: #007bff; /* Couleur des liens */
-  text-decoration: none; /* Pas de soulignement par défaut */
-}
-
-a:hover {
-  text-decoration: underline; /* Soulignement au survol */
-}
-
 .app-logo {
-  height: 100px; /* Adapte la hauteur à ton logo, ou utilise max-height */
-  width: auto; /* Garde les proportions de l'image */
-  display: block; /* Pour pouvoir appliquer les marges auto */
-  margin: 20px auto 40px auto; /* Centre le logo et ajoute de l'espace */
-  max-width: 90%; /* S'assure que le logo ne déborde pas sur petits écrans */
+  height: 100px;
+  width: auto;
+  display: block;
+  margin: 20px auto 40px auto;
+  max-width: 90%;
 }
 
-/* Styles pour la barre de recherche */
 .search-bar-container {
-  margin: 25px auto; /* Espacement autour de la barre de recherche, centré */
-  max-width: 600px; /* Aligné avec la largeur du formulaire */
+  margin: 25px auto;
+  max-width: 600px;
   text-align: center;
 }
 
 .search-input {
-  width: calc(100% - 40px); /* Ajuste la largeur pour laisser de l'espace pour le padding */
+  width: calc(100% - 40px);
   padding: 12px 20px;
   font-size: 1.1em;
   border: 1px solid #ced4da;
-  border-radius: 25px; /* Bords bien arrondis */
+  border-radius: 25px;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* Légère ombre */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
 .search-input:focus {
-  border-color: #007bff; /* Bordure bleue au focus */
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Ombre bleue au focus */
-}
-
-/* Styles pour la pagination */
-.pagination {
-  margin-top: 25px; /* Plus d'espace au-dessus des boutons de pagination */
-  display: flex; /* Aligne les boutons en ligne */
-  justify-content: center; /* Centre les boutons */
-  flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si l'écran est petit */
-  gap: 10px; /* Espacement entre les boutons */
-}
-
-.pagination button {
-  padding: 10px 15px; /* Plus grand padding pour les boutons */
-  border: 1px solid #007bff; /* Bordure bleue */
-  border-radius: 5px; /* Bords légèrement arrondis */
-  background-color: #fff;
-  color: #007bff;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-
-.pagination button:hover {
-  background-color: #e7f3ff; /* Léger fond bleu au survol */
-  border-color: #0056b3;
-}
-
-.pagination button.active {
-  background-color: #007bff; /* Bouton actif en bleu plein */
-  color: white;
   border-color: #007bff;
-  font-weight: bold;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-/* Nouveaux styles pour le bouton de bascule du formulaire */
 .form-toggle-section {
-  margin: 30px auto 20px auto; /* Marge au-dessus et en dessous, centré */
-  max-width: 600px; /* Alignée avec la largeur du formulaire */
-  text-align: center; /* Pour centrer le bouton si besoin */
+  margin: 30px auto 20px auto;
+  max-width: 600px;
+  text-align: center;
 }
 
 .toggle-form-button {
   padding: 12px 25px;
-  background-color: #6c757d; /* Un gris neutre */
+  background-color: #6c757d;
   color: white;
   border: none;
   border-radius: 5px;
@@ -118,11 +102,73 @@ a:hover {
 }
 
 .toggle-form-button:hover {
-  background-color: #5a6268; /* Gris plus foncé au survol */
-  transform: translateY(-1px); /* Petit effet de soulèvement */
+  background-color: #5a6268;
+  transform: translateY(-1px);
 }
 
-/* Styles pour les messages de succès/erreur (déjà présents, mais rappel) */
+.add-song-form-container {
+  background-color: #eef7ff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin: 30px auto;
+  max-width: 600px;
+  text-align: left;
+}
+
+.add-song-form-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-group input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.add-song-form-container button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.add-song-form-container button[type="submit"]:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.add-song-form-container button[type="submit"]:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
 .success-message {
     color: #155724;
     background-color: #d4edda;
@@ -145,78 +191,76 @@ a:hover {
   text-align: center;
 }
 
-
-/* Styles pour le formulaire d'ajout */
-.add-song-form-container {
-  background-color: #eef7ff; /* Fond légèrement bleu pour le formulaire */
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  margin: 30px auto; /* Marge et centrage */
-  max-width: 600px; /* Largeur max du formulaire */
-  text-align: left; /* Aligne le texte du formulaire à gauche */
+.pagination {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.add-song-form-container h2 {
-  text-align: center; /* Centre le titre du formulaire */
-  margin-bottom: 25px;
+.pagination button {
+  padding: 10px 15px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-.form-group {
-  margin-bottom: 18px; /* Espacement entre les groupes label/input */
+.pagination button:hover {
+  background-color: #e7f3ff;
+  border-color: #0056b3;
 }
 
-.form-group label {
-  display: block; /* Chaque label sur une nouvelle ligne */
-  margin-bottom: 8px; /* Espacement entre label et input */
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
   font-weight: bold;
-  color: #333;
 }
 
-.form-group input {
-  width: calc(100% - 20px); /* Prend presque toute la largeur avec padding */
+.form-group select {
+  width: 100%;
   padding: 10px;
   border: 1px solid #ced4da;
   border-radius: 5px;
   font-size: 1em;
+  box-sizing: border-box; /* S'assure que la largeur inclut padding et bordure */
 }
 
-.form-group input:focus {
+.form-group select:focus {
   border-color: #007bff;
   outline: none;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-.add-song-form-container button[type="submit"] {
-  display: block; /* Bouton sur une nouvelle ligne */
-  width: 100%; /* Prend toute la largeur */
-  padding: 12px 20px;
-  background-color: #28a745; /* Vert pour le bouton d'ajout */
-  color: white;
-  border: none;
-  border-radius: 5px;
+/* Styles pour le select multiple pour un meilleur rendu */
+.form-group select[multiple] {
+  height: auto; /* Laisse le champ s'agrandir avec les options */
+  min-height: 100px; /* Hauteur minimale pour que ce soit visible */
+}
+
+.checkbox-group {
+  margin-bottom: 18px;
+}
+
+.checkbox-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Espace entre les options */
+  margin-top: 8px;
+}
+
+.checkbox-options input[type="checkbox"] {
+  margin-right: 5px;
   cursor: pointer;
-  font-size: 1.1em;
-  font-weight: bold;
-  transition: background-color 0.2s ease;
 }
 
-.add-song-form-container button[type="submit"]:hover:not(:disabled) {
-  background-color: #218838; /* Vert plus foncé au survol */
-}
-
-.add-song-form-container button[type="submit"]:disabled {
-  background-color: #6c757d; /* Gris quand désactivé */
-  cursor: not-allowed;
-}
-
-.success-message {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
+.checkbox-options label {
+  display: inline;
+  font-weight: normal;
+  cursor: pointer;
 }
