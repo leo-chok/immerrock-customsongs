@@ -264,3 +264,28 @@ h1, h2 {
   font-weight: normal;
   cursor: pointer;
 }
+
+/* Loader animation styles */
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    font-size: 1.2em;
+    color: #007bff;
+}
+
+.loader {
+    width: 25px;
+    height: 25px;
+    border: 4px solid rgba(0, 123, 255, 0.2);
+    border-top-color: #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

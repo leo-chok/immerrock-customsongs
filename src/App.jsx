@@ -103,7 +103,12 @@ function App() {
       </div>
 
 
-      {loading && <h2>Fetching database ...</h2>}
+      {loading && 
+        <div className="loader-container">
+          <div className="loader"></div>
+          <h2>Fetching songs list ...</h2>
+        </div>
+      }
       {error && <p className="error-message">{error}</p>}
       {!loading && !error && <SongList songs={filteredSongs} onSongUpdated={handleSongUpdated}/>}
       <div>
