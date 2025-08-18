@@ -1,30 +1,36 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from "react";
+import PropTypes from "prop-types";
 
 function AddSongForm({ onSongAdded }) {
-  const [artist, setArtist] = useState('');
-  const [title, setTitle] = useState('');
+  const [artist, setArtist] = useState("");
+  const [title, setTitle] = useState("");
   const [type, setType] = useState([]);
-  const [tuning, setTuning] = useState('');
-  const [link, setLink] = useState('');
-  const [password, setPassword] = useState(''); // <-- NOUVEL ÉTAT
+  const [tuning, setTuning] = useState("");
+  const [link, setLink] = useState("");
+  const [password, setPassword] = useState(""); // <-- NOUVEL ÉTAT
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState(null);
   const [formSuccess, setFormSuccess] = useState(null);
 
-  const API_URL = 'https://immerrock-customsongs-backend.onrender.com/api/songs';
+  const API_URL =
+    "https://immerrock-customsongs-backend.onrender.com/api/songs";
 
-  const trackTypes = ['Lead', 'Rhythm', 'Bass', 'Acoustic'];
+  const trackTypes = ["Lead", "Rhythm", "Bass", "Acoustic"];
   const tuningOptions = [
-    'E Standard', 'Drop D', 'Eb Standard', 'Drop C', 'D Standard', 'Drop B', 'DADG', 'B Standard'
+    "E Standard",
+    "Drop D",
+    "Eb Standard",
+    "Drop C",
+    "D Standard",
+    "Drop B",
+    "DADG",
+    "B Standard",
   ];
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
-    setType(prevTypes => 
-      checked 
-        ? [...prevTypes, value] 
-        : prevTypes.filter(t => t !== value)
+    setType((prevTypes) =>
+      checked ? [...prevTypes, value] : prevTypes.filter((t) => t !== value)
     );
   };
 
@@ -34,15 +40,22 @@ function AddSongForm({ onSongAdded }) {
     setFormError(null);
     setFormSuccess(null);
 
-    const formattedType = type.join(', ');
+    const formattedType = type.join(", ");
 
-    const newSong = { artist, title, type: formattedType, tuning, link, password }; // <-- AJOUT DU MOT DE PASSE
+    const newSong = {
+      artist,
+      title,
+      type: formattedType,
+      tuning,
+      link,
+      password,
+    }; // <-- AJOUT DU MOT DE PASSE
 
     try {
       const response = await fetch(API_URL, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(newSong),
       });
@@ -55,17 +68,16 @@ function AddSongForm({ onSongAdded }) {
       const addedSong = await response.json();
       setFormSuccess(`Song "${addedSong.title}" added successfully!`);
 
-      setArtist('');
-      setTitle('');
+      setArtist("");
+      setTitle("");
       setType([]);
-      setTuning('');
-      setLink('');
-      setPassword(''); // <-- Réinitialise le champ après envoi
+      setTuning("");
+      setLink("");
+      setPassword("");
 
       if (onSongAdded) {
         onSongAdded();
       }
-
     } catch (err) {
       console.error("Error adding song:", err);
       setFormError(err.message || "Error adding song. Please try again.");
@@ -76,7 +88,7 @@ function AddSongForm({ onSongAdded }) {
 
   return (
     <div className="add-song-form-container">
-      <h2>Add a New Song</h2>
+      <h2>Submit a New Song</h2>
       {formSuccess && <p className="success-message">{formSuccess}</p>}
       {formError && <p className="error-message">{formError}</p>}
       <form onSubmit={handleSubmit}>
@@ -103,7 +115,7 @@ function AddSongForm({ onSongAdded }) {
         <div className="form-group checkbox-group">
           <label>Track Type(s):</label>
           <div className="checkbox-options">
-            {trackTypes.map(trackType => (
+            {trackTypes.map((trackType) => (
               <div key={trackType}>
                 <input
                   type="checkbox"
@@ -126,8 +138,10 @@ function AddSongForm({ onSongAdded }) {
             required
           >
             <option value="">Select a tuning...</option>
-            {tuningOptions.map(opt => (
-              <option key={opt} value={opt}>{opt}</option>
+            {tuningOptions.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
             ))}
           </select>
         </div>
@@ -150,10 +164,13 @@ function AddSongForm({ onSongAdded }) {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <p>The password can be found on our Discord.</p>
         </div>
-        <button type="submit" disabled={submitting}>
-          {submitting ? 'Adding...' : 'Add Song'}
-        </button>
+        {artist && title && type && tuning && link && password && (
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Adding..." : "Submit"}
+          </button>
+        )}
       </form>
     </div>
   );
