@@ -84,9 +84,7 @@ function SongCard({ song, onSongUpdated }) {
 
   return (
     <div className="song-card table-row">
-      <div className="table-cell date-cell">
-          <span className="cell-content" title={formatDate(song.createdAt)}>{formatDate(song.createdAt)}</span>
-      </div>
+      
       <div className="table-cell artist-cell">
           <span className="cell-content" title={song.artist}>{song.artist}</span>
       </div>
@@ -118,13 +116,21 @@ function SongCard({ song, onSongUpdated }) {
               <span className="vote-score">({voteScore})</span>
           </div>
       </div>
-      <div className="table-cell download-action-cell">
-          <button onClick={handleDownload} className="download-button">
-              🔗 Download
-          </button>
+     
+      
+      <div className="table-cell date-cell">
+          <span className="cell-content" title={formatDate(song.createdAt)}>{formatDate(song.createdAt)}</span>
+      </div>
+      <div className="table-cell author-cell">
+          <span className="cell-content" title={song.author}>{song.author}</span>
       </div>
       <div className="table-cell downloads-count-cell">
           <span className="cell-content" title={song.downloads}>{song.downloads}</span>
+      </div>
+       <div className="table-cell download-action-cell">
+          <button onClick={handleDownload} className="download-button">
+              🔗 Download
+          </button>
       </div>
     </div>
   );
@@ -142,6 +148,7 @@ SongCard.propTypes = {
     downvotes: PropTypes.number,
     downloads: PropTypes.number,
     createdAt: PropTypes.string,
+    author: PropTypes.string,
   }).isRequired,
   onSongUpdated: PropTypes.func.isRequired,
 };

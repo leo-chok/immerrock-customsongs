@@ -7,13 +7,13 @@ function AddSongForm({ onSongAdded }) {
   const [type, setType] = useState([]);
   const [tuning, setTuning] = useState("");
   const [link, setLink] = useState("");
-  const [password, setPassword] = useState(""); // <-- NOUVEL ÉTAT
+  const [password, setPassword] = useState("");
+  const [author, setAuthor] = useState(""); // <-- NOUVEL ÉTAT POUR L'AUTEUR
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState(null);
   const [formSuccess, setFormSuccess] = useState(null);
 
-  const API_URL =
-    "https://immerrock-customsongs-backend.onrender.com/api/songs";
+  const API_URL = "https://immerrock-customsongs-backend.onrender.com/api/songs";
 
   const trackTypes = ["Lead", "Rhythm", "Bass", "Acoustic"];
   const tuningOptions = [
@@ -49,7 +49,8 @@ function AddSongForm({ onSongAdded }) {
       tuning,
       link,
       password,
-    }; // <-- AJOUT DU MOT DE PASSE
+      author, // <-- AJOUT DE L'AUTEUR DANS L'OBJET
+    };
 
     try {
       const response = await fetch(API_URL, {
@@ -74,6 +75,7 @@ function AddSongForm({ onSongAdded }) {
       setTuning("");
       setLink("");
       setPassword("");
+      setAuthor(""); // <-- RÉINITIALISATION DE L'AUTEUR
 
       if (onSongAdded) {
         onSongAdded();
@@ -156,9 +158,19 @@ function AddSongForm({ onSongAdded }) {
           />
         </div>
         <div className="form-group">
+          <label htmlFor="author">Your name:</label>
+          <input
+            type="text"
+            id="author"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
-            type="password" // <-- type="password" cache les caractères
+            type="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -166,7 +178,8 @@ function AddSongForm({ onSongAdded }) {
           />
           <p>The password can be found on our Discord.</p>
         </div>
-        {artist && title && type && tuning && link && password && (
+        
+        {artist && title && type && tuning && link && password && author && (
           <button type="submit" disabled={submitting}>
             {submitting ? "Adding..." : "Submit"}
           </button>
