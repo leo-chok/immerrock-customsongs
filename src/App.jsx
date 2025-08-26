@@ -72,7 +72,8 @@ function App() {
       song.artist.toLowerCase().includes(query) ||
       song.title.toLowerCase().includes(query) ||
       song.type.toLowerCase().includes(query) ||
-      song.tuning.toLowerCase().includes(query)
+      song.tuning.toLowerCase().includes(query) ||
+      song.author.toLowerCase().includes(query)
     );
   });
 
