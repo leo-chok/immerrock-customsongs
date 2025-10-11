@@ -25,6 +25,8 @@ function AddSongForm({ onSongAdded }) {
     "Drop B",
     "DADG",
     "B Standard",
+    "Custom",
+    "Other",
   ];
 
   const handleCheckboxChange = (e) => {
@@ -49,7 +51,7 @@ function AddSongForm({ onSongAdded }) {
       tuning,
       link,
       password,
-      author, // <-- AJOUT DE L'AUTEUR DANS L'OBJET
+      author, 
     };
 
     try {
@@ -75,7 +77,7 @@ function AddSongForm({ onSongAdded }) {
       setTuning("");
       setLink("");
       setPassword("");
-      setAuthor(""); // <-- RÉINITIALISATION DE L'AUTEUR
+      setAuthor("");
 
       if (onSongAdded) {
         onSongAdded();
