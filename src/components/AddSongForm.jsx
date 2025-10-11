@@ -15,7 +15,7 @@ function AddSongForm({ onSongAdded }) {
 
   const API_URL = "https://immerrock-customsongs-backend.onrender.com/api/songs";
 
-  const trackTypes = ["Lead", "Rhythm", "Bass", "Acoustic"];
+  const trackTypes = ["Lead", "Rhythm", "Bass", "Acoustic", "Ukulele", "Other"];
   const tuningOptions = [
     "E Standard",
     "Drop D",
