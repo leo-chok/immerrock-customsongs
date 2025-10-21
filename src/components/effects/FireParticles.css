@@ -1,0 +1,15 @@
+.fire-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    #0a0a0a 0%,
+    #0a0a0a 70%,
+    #1a0a00 100%
+  );
+}

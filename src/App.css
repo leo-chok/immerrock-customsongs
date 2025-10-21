@@ -41,9 +41,9 @@
 }
 
 /* NOUVEAUX STYLES CI-DESSOUS pour le tableau et la pagination */
+/* App.css - Simplifié pour la nouvelle architecture */
 .App {
-  font-family: Arial, sans-serif;
-  color: #333;
+  width: 100%;
 }
 
 h1,

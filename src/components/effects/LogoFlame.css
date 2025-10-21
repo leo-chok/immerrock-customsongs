@@ -1,0 +1,148 @@
+.logo-flame-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 140px;
+  margin: 1rem auto 0.5rem auto;
+  overflow: visible;
+}
+
+.flame-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.logo-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flame-glow {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 69, 0, 0.4) 0%,
+    rgba(255, 140, 0, 0.3) 30%,
+    rgba(255, 69, 0, 0.2) 50%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(20px);
+  animation: flameGlow 2s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes flameGlow {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 0.7;
+  }
+}
+
+.flame-logo {
+  height: 100px;
+  width: auto;
+  position: relative;
+  filter: drop-shadow(0 0 25px rgba(255, 69, 0, 0.8))
+          drop-shadow(0 0 50px rgba(255, 140, 0, 0.5));
+  animation: logoFloat 3s ease-in-out infinite,
+             logoFlicker 4s ease-in-out infinite alternate;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes logoFlicker {
+  0% {
+    filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.7))
+            drop-shadow(0 0 40px rgba(255, 140, 0, 0.4))
+            brightness(1);
+  }
+  25% {
+    filter: drop-shadow(0 0 30px rgba(255, 69, 0, 0.9))
+            drop-shadow(0 0 60px rgba(255, 140, 0, 0.6))
+            brightness(1.1);
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(255, 140, 0, 0.8))
+            drop-shadow(0 0 50px rgba(255, 69, 0, 0.5))
+            brightness(1.05);
+  }
+  75% {
+    filter: drop-shadow(0 0 35px rgba(255, 69, 0, 1))
+            drop-shadow(0 0 70px rgba(255, 140, 0, 0.7))
+            brightness(1.15);
+  }
+  100% {
+    filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.7))
+            drop-shadow(0 0 40px rgba(255, 140, 0, 0.4))
+            brightness(1);
+  }
+}
+
+.flame-logo:hover {
+  filter: drop-shadow(0 0 40px rgba(255, 69, 0, 1))
+          drop-shadow(0 0 80px rgba(255, 140, 0, 0.8));
+  transform: scale(1.08) rotate(2deg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .logo-flame-container {
+    height: 150px;
+    margin: 1.5rem auto;
+  }
+
+  .flame-glow {
+    width: 120px;
+    height: 120px;
+  }
+
+  .flame-logo {
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-flame-container {
+    height: 120px;
+    margin: 1rem auto;
+  }
+
+  .flame-glow {
+    width: 100px;
+    height: 100px;
+  }
+
+  .flame-logo {
+    height: 80px;
+  }
+}
