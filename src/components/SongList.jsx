@@ -72,7 +72,7 @@ function SongList({ songs, onSongUpdated }) {
 
   return (
     <div className="song-list-container">
-      <h2> {songs.length} songs found.</h2>
+      <h2> {songs.length} songs to master!</h2>
 
       {songs.length > 0 && (
         <>
