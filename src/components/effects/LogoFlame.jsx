@@ -65,8 +65,8 @@ const LogoFlame = ({ logoSrc }) => {
     // Create particles around the logo
     const createParticles = () => {
       const centerX = canvas.width / 2;
-      const logoHeight = 120; // Match logo height
-      const logoWidth = 120; // Approximate width
+      const logoHeight = 300; // Match logo height
+      const logoWidth = 500; // Approximate width
       const bottomY = canvas.height / 2 + logoHeight / 2;
 
       // Create particles from bottom and sides of logo

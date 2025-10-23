@@ -45,7 +45,7 @@ const FireParticles = () => {
         this.life += 0.01;
         
         // Oscillation horizontale pour effet de danse
-        this.x += Math.sin(this.life * 2) * 0.5;
+        this.x += Math.sin(this.life * 2) * 0.1;
         
         // Diminution progressive
         this.opacity -= 0.004;
@@ -73,7 +73,7 @@ const FireParticles = () => {
         // Orange/rouge
         gradient.addColorStop(0.6, `hsla(${this.hue}, 100%, 50%, 0.7)`);
         // Rouge sombre qui se dissipe
-        gradient.addColorStop(1, `hsla(${this.hue - 10}, 100%, 30%, 0)`);
+        gradient.addColorStop(0.9, `hsla(${this.hue - 10}, 100%, 30%, 0)`);
 
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -98,9 +98,8 @@ const FireParticles = () => {
 
     // Animation
     const animate = () => {
-      // Fond semi-transparent pour effet de traînée
-      ctx.fillStyle = 'rgba(10, 10, 10, 0.15)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Effacer complètement le canvas pour éviter les tracés
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach(particle => {
         particle.update();

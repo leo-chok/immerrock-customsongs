@@ -3,14 +3,15 @@ import { createContext, useState, useEffect, useCallback } from 'react';
 export const SongsContext = createContext();
 
 // API URL - Change according to your environment
-const API_URL = import.meta.env.VITE_API_URL || 'https://immerrock-customsongs-backend.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://immerrock-customsongs-back.vercel.app/api';
 
 export const SongsProvider = ({ children }) => {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('recent'); // 'recent', 'popular', 'downloads', 'title', 'artist'
+  const [sortBy, setSortBy] = useState('recent'); // 'recent', 'popular', 'downloads', 'title', 'artist', 'type', 'tuning', 'author'
+  const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
   const [filterType, setFilterType] = useState('all'); // 'all', 'lead', 'rhythm', 'bass', 'ukulele', 'other'
   const [filterTuning, setFilterTuning] = useState('all'); // 'all' or specific tuning
 
@@ -18,10 +19,23 @@ export const SongsProvider = ({ children }) => {
   const fetchSongs = useCallback(async () => {
     setLoading(true);
     setError(null);
+    
+    // Start timer for minimum loading duration
+    const startTime = Date.now();
+    const minLoadingTime = 3000; // 3 seconds
+    
     try {
       const response = await fetch(`${API_URL}/songs`);
       if (!response.ok) throw new Error('Error loading songs');
       const data = await response.json();
+      
+      // Calculate remaining time to reach minimum loading duration
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+      
+      // Wait for remaining time before setting songs and hiding loading
+      await new Promise(resolve => setTimeout(resolve, remainingTime));
+      
       setSongs(data);
     } catch (err) {
       setError(err.message);
@@ -120,29 +134,63 @@ export const SongsProvider = ({ children }) => {
     // Tri
     switch (sortBy) {
       case 'popular':
-        filtered.sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
+        filtered.sort((a, b) => {
+          const diff = (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes);
+          return sortOrder === 'asc' ? -diff : diff;
+        });
         break;
       case 'downloads':
-        filtered.sort((a, b) => b.downloads - a.downloads);
+        filtered.sort((a, b) => {
+          const diff = b.downloads - a.downloads;
+          return sortOrder === 'asc' ? -diff : diff;
+        });
         break;
       case 'title':
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
+        filtered.sort((a, b) => {
+          const result = a.title.localeCompare(b.title);
+          return sortOrder === 'asc' ? result : -result;
+        });
         break;
       case 'artist':
-        filtered.sort((a, b) => a.artist.localeCompare(b.artist));
+        filtered.sort((a, b) => {
+          const result = a.artist.localeCompare(b.artist);
+          return sortOrder === 'asc' ? result : -result;
+        });
+        break;
+      case 'type':
+        filtered.sort((a, b) => {
+          const result = a.type.localeCompare(b.type);
+          return sortOrder === 'asc' ? result : -result;
+        });
+        break;
+      case 'tuning':
+        filtered.sort((a, b) => {
+          const result = a.tuning.localeCompare(b.tuning);
+          return sortOrder === 'asc' ? result : -result;
+        });
+        break;
+      case 'author':
+        filtered.sort((a, b) => {
+          const result = a.author.localeCompare(b.author);
+          return sortOrder === 'asc' ? result : -result;
+        });
         break;
       case 'recent':
       default:
-        filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        filtered.sort((a, b) => {
+          const diff = new Date(b.createdAt) - new Date(a.createdAt);
+          return sortOrder === 'asc' ? -diff : diff;
+        });
         break;
     }
 
     return filtered;
   };
 
+  // Fetch songs on mount only
   useEffect(() => {
     fetchSongs();
-  }, [fetchSongs]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const value = {
     songs,
@@ -152,6 +200,8 @@ export const SongsProvider = ({ children }) => {
     setSearchTerm,
     sortBy,
     setSortBy,
+    sortOrder,
+    setSortOrder,
     filterType,
     setFilterType,
     filterTuning,

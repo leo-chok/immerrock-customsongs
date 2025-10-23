@@ -11,15 +11,6 @@ const Header = () => {
             <span className="logo-text-flame">Custom Songs</span>
           </h1>
         </div>
-        <nav className="nav">
-          <a href="#songs" className="nav-link active">
-            Chansons
-          </a>
-          <a href="#add" className="nav-link">
-            Ajouter
-          </a>
-          {/* Admin link sera ajouté plus tard */}
-        </nav>
       </div>
     </header>
   );
