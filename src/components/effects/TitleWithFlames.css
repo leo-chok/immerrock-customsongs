@@ -69,8 +69,8 @@
 .flames-canvas {
   position: absolute;
   top: 0;
-  left: 25%;
-  width: 600px;
+  left: 50%;
+  transform: translateX(-50%);
   height: 100%;
   pointer-events: none;
   z-index: 10;

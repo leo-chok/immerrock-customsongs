@@ -1,22 +1,43 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import logo from '../../assets/Immerrock_logo.png';
 import './TitleWithFlames.css';
 
 const TitleWithFlames = () => {
   const canvasRef = useRef(null);
+  const titleRef = useRef(null);
+  const [titleWidth, setTitleWidth] = useState(0);
+
+  // Mesurer la largeur du titre
+  useEffect(() => {
+    const measureTitle = () => {
+      if (titleRef.current) {
+        const width = titleRef.current.offsetWidth;
+        setTitleWidth(width);
+      }
+    };
+
+    // Mesurer initialement et au resize
+    measureTitle();
+    window.addEventListener('resize', measureTitle);
+
+    return () => {
+      window.removeEventListener('resize', measureTitle);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || titleWidth === 0) return;
 
     const ctx = canvas.getContext('2d');
     const particles = [];
     let animationFrameId;
 
-    // Ajuster la taille du canvas
+    // Ajuster la taille du canvas en fonction du titre
     const resizeCanvas = () => {
       const container = canvas.parentElement;
-      canvas.width = container.offsetWidth;
+      // Utiliser la largeur du titre
+      canvas.width = titleWidth;
       canvas.height = container.offsetHeight;
     };
     resizeCanvas();
@@ -29,27 +50,33 @@ const TitleWithFlames = () => {
       }
 
       reset() {
-        // Les particules commencent au bas du titre (environ 80% de la hauteur du canvas)
+        // Les particules commencent au bas du titre (environ 85% de la hauteur du canvas)
         this.x = Math.random() * canvas.width;
-        this.y = canvas.height * .8;
-        this.size = Math.random() * 4 + 2;
-        this.speedX = (Math.random() - 0.5) * 2;
-        this.speedY = -Math.random() * 3 - 1;
-        this.life = 1;
-        this.decay = Math.random() * 0.015 + 0.01;
-        this.hue = Math.random() * 30; // Orange-rouge
+        this.y = canvas.height * .75;
+        // Taille augmentée : entre 3 et 10 (au lieu de 2-6)
+        this.size = Math.random() * 3 + 3;
+        // Vitesse horizontale ralentie : divisée par 2
+        this.speedX = (Math.random() - 0.5) * 1;
+        // Vitesse verticale ralentie : entre -0.5 et -2 (au lieu de -1 à -4)
+        this.speedY = -Math.random() * 1.5 - 0.5;
+        this.life = 5;
+        // Decay ralenti pour vivre plus longtemps
+        this.decay = Math.random() * 0.008 + 0.005;
+        this.hue = Math.random() * 20; // Orange-rouge
       }
 
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
         this.life -= this.decay;
-        this.size *= 0.98;
+        // Réduction de taille ralentie
+        this.size *= 0.982;
 
-        // Oscillation
-        this.x += Math.sin(this.y * 0.05) * 0.5;
+        // Oscillation ralentie
+        this.x += Math.sin(this.y * 0.03) * 0.3;
 
-        if (this.life <= 0 || this.y < 0) {
+        // Les particules peuvent monter plus haut (jusqu'à -20% du canvas au lieu de 0)
+        if (this.life <= 0 || this.y < -canvas.height * 0.5) {
           this.reset();
         }
       }
@@ -100,7 +127,7 @@ const TitleWithFlames = () => {
       window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [titleWidth]);
 
   return (
     <div className="title-flames-container">
@@ -109,7 +136,7 @@ const TitleWithFlames = () => {
       <img src={logo} alt="Immerrock Logo" className="floating-logo" />
       </a>
       {/* Titre */}
-      <h1 className="flame-title">
+      <h1 ref={titleRef} className="flame-title">
         Custom Songs Library
       </h1>
       
