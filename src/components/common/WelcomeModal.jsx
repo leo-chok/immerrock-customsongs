@@ -1,31 +1,43 @@
 import { useState, useEffect } from "react";
+import FlameExplosion from "../effects/FlameExplosion";
 import "./WelcomeModal.css";
 
 const WelcomeModal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showExplosion, setShowExplosion] = useState(false);
 
   useEffect(() => {
     // Vérifier si c'est la première visite
     const hasVisited = localStorage.getItem("hasVisitedImmerock");
 
     if (!hasVisited) {
-      // Petit délai pour l'animation d'entrée
+      // Afficher la modale et déclencher l'explosion en même temps
       setTimeout(() => {
         setIsOpen(true);
+        setShowExplosion(true);
       }, 500);
     }
   }, []);
 
   const handleClose = () => {
     setIsOpen(false);
+    setShowExplosion(false);
     // Marquer que l'utilisateur a visité le site
     localStorage.setItem("hasVisitedImmerock", "true");
+  };
+
+  const handleExplosionComplete = () => {
+    setShowExplosion(false);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="welcome-modal-overlay" onClick={handleClose}>
+    <>
+      {showExplosion && <FlameExplosion onComplete={handleExplosionComplete} />}
+      
+      {isOpen && (
+        <div className="welcome-modal-overlay" onClick={handleClose}>
       <div
         className="welcome-modal-content"
         onClick={(e) => e.stopPropagation()}
@@ -47,7 +59,7 @@ const WelcomeModal = () => {
           </p>
           <p>
             For our talented creators, thank you for contributing! Please use
-            the form below to share your custom songs with the community.
+            the form to share your custom songs with the community.
           </p>
         </div>
 
@@ -58,6 +70,8 @@ const WelcomeModal = () => {
         </div>
       </div>
     </div>
+      )}
+    </>
   );
 };
 
