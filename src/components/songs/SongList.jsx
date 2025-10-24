@@ -138,53 +138,94 @@ const SongList = () => {
           ) : (
             <>
               <span className="count-highlight">{filteredSongs.length}</span>{" "}
-              {filteredSongs.length === 1 ? "song found" : "songs found"}
+              {filteredSongs.length === 1 ? "song" : "songs"}
             </>
           )}
         </p>
       </div>
 
-      {/* Filtres seulement TYPE et TUNING */}
-      <div className="filters-section">
-        <div className="filter-group">
-          <label htmlFor="type-select">TYPE:</label>
-          <select
-            id="type-select"
-            className="filter-select"
-            value={filterType}
-            onChange={(e) => handleFilterChange(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="lead">Lead</option>
-            <option value="rhythm">Rhythm</option>
-            <option value="bass">Bass</option>
-            <option value="ukulele">Ukulele</option>
-            <option value="other">Other</option>
-          </select>
+      {/* Section unifiée Filtres + Sort */}
+      <div className="unified-controls-section">
+        {/* Filtres TYPE et TUNING */}
+        <div className="filters-row">
+          <span className="filter-by-label">Filter by:</span>
+          <div className="filters-wrapper">
+            <div className="filter-group">
+              <label htmlFor="type-select">TYPE:</label>
+              <select
+                id="type-select"
+                className="filter-select"
+                value={filterType}
+                onChange={(e) => handleFilterChange(e.target.value)}
+              >
+                <option value="all">All</option>
+                <option value="lead">Lead</option>
+                <option value="rhythm">Rhythm</option>
+                <option value="bass">Bass</option>
+                <option value="ukulele">Ukulele</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div className="filter-group">
+              <label htmlFor="tuning-select">TUNING:</label>
+              <select
+                id="tuning-select"
+                className="filter-select"
+                value={filterTuning}
+                onChange={(e) => handleTuningFilterChange(e.target.value)}
+              >
+                <option value="all">All</option>
+                {getUniqueTunings().map((tuning) => (
+                  <option key={tuning} value={tuning}>
+                    {tuning}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div className="filter-group">
-          <label htmlFor="tuning-select">TUNING:</label>
-          <select
-            id="tuning-select"
-            className="filter-select"
-            value={filterTuning}
-            onChange={(e) => handleTuningFilterChange(e.target.value)}
-          >
-            <option value="all">All</option>
-            {getUniqueTunings().map((tuning) => (
-              <option key={tuning} value={tuning}>
-                {tuning}
-              </option>
-            ))}
-          </select>
+        {/* Cordes de guitare séparateur */}
+        <div className="guitar-strings">
+          <div className="guitar-string"></div>
+          <div className="guitar-string"></div>
+          <div className="guitar-string"></div>
+          <div className="guitar-string"></div>
+          <div className="guitar-string"></div>
         </div>
-      </div>
 
-      {currentSongs.length > 0 ? (
-        <>
-          {/* En-têtes de colonnes cliquables */}
-          <div className="table-header">
+        {/* En-têtes de colonnes cliquables */}
+        <div className="sort-row">
+            <span className="sort-by-label">Sort by:</span>
+            
+            {/* Dropdown pour mobile/tablette */}
+            <select
+              className="sort-select-mobile"
+              value={`${sortBy}-${sortOrder}`}
+              onChange={(e) => {
+                const [column, order] = e.target.value.split('-');
+                setSortBy(column);
+                setSortOrder(order);
+                setCurrentPage(1);
+              }}
+            >
+              <option value="title-asc">Song (A-Z)</option>
+              <option value="title-desc">Song (Z-A)</option>
+              <option value="type-asc">Type (A-Z)</option>
+              <option value="type-desc">Type (Z-A)</option>
+              <option value="tuning-asc">Tuning (A-Z)</option>
+              <option value="tuning-desc">Tuning (Z-A)</option>
+              <option value="author-asc">Author (A-Z)</option>
+              <option value="author-desc">Author (Z-A)</option>
+              <option value="popular-asc">Votes (Low-High)</option>
+              <option value="popular-desc">Votes (High-Low)</option>
+              <option value="downloads-asc">Downloads (Low-High)</option>
+              <option value="downloads-desc">Downloads (High-Low)</option>
+            </select>
+
+            {/* Headers cliquables pour desktop */}
+            <div className="table-header">
             <div
               className={`header-cell title-header ${
                 sortBy === "title" ? "active" : ""
@@ -247,7 +288,12 @@ const SongList = () => {
             </div>
             <div className="header-cell action-header">Link</div>
           </div>
+        </div>
+      </div>
 
+      {/* Liste des chansons */}
+      {currentSongs.length > 0 ? (
+        <>
           <div className="song-table">
             {currentSongs.map((song) => (
               <SongCard key={song._id} song={song} />

@@ -67,6 +67,21 @@ const SongCard = ({ song }) => {
         </p>
       </div>
 
+      {/* Metadata row pour mobile (Type / Tuning / Author) */}
+      <div className="song-cell metadata-row-mobile">
+        <span className="metadata-item">
+          <span className="metadata-label">Type:</span> {getTypeLabel(song.type)}
+        </span>
+        <span className="metadata-separator">•</span>
+        <span className="metadata-item">
+          <span className="metadata-label">Tuning:</span> {song.tuning}
+        </span>
+        <span className="metadata-separator">•</span>
+        <span className="metadata-item">
+          <span className="metadata-label">By</span> <span className="author-name-mobile">{song.author}</span>
+        </span>
+      </div>
+
       {/* Votes - AVEC FLECHES */}
       <div className="song-cell votes-cell">
         <div className={`vote-section ${userVote === 'upvote' ? 'voted-up' : userVote === 'downvote' ? 'voted-down' : ''}`}>
@@ -102,6 +117,10 @@ const SongCard = ({ song }) => {
 
       {/* Download Button - AVEC ICONE DOWNLOAD */}
       <div className="song-cell action-cell">
+        <span className="download-count-mobile">
+          <FaDownload className="download-icon-mobile" />
+          {song.downloads || 0}
+        </span>
         <button className="download-btn" onClick={handleDownload}>
           <FaDownload className="btn-icon" />
           <span className="btn-text">Download</span>
