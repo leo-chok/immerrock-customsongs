@@ -89,14 +89,13 @@ p {
 
 /* Links */
 a {
-  color: var(--accent-secondary);
+  color: var(--accent-secondary) !important;
   text-decoration: none;
   transition: color 0.3s ease-in-out;
 }
 
 a:hover {
-  color: var(--accent-primary);
-  text-decoration: underline;
+  color: var(--accent-primary) !important;
 }
 
 /* Buttons - Reset */

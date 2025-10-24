@@ -327,7 +327,7 @@ const AddSongForm = () => {
                 />
                 {errors.validationCode && <span className="error-text">{errors.validationCode}</span>}
                 <small className="help-text">
-                  The validation code is available on the community Discord server
+                  The validation code is available on the community <a href="https://discord.com/invite/SP4tumnEx6" target="_blank" rel="noopener noreferrer">Discord Server</a>.
                 </small>
               </div>
 
