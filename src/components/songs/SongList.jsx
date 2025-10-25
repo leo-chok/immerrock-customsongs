@@ -108,8 +108,9 @@ const SongList = () => {
 
   return (
     <div className={`song-list-container ${fadeIn ? 'fade-in' : ''}`}>
-      {/* Searchbar indépendante */}
-      <div className="search-section">
+      {/* Section Search unifiée avec label et compteur */}
+      <div id="song-list-anchor" className="search-unified-section">
+        <span className="search-label">Search:</span>
         <div className="search-wrapper-input">
           <input
             type="text"
@@ -128,20 +129,16 @@ const SongList = () => {
             </button>
           )}
         </div>
-      </div>
-
-      {/* Info résultats */}
-      <div id="song-list-anchor" className="results-info">
-        <p>
+        <div className="results-count">
           {filteredSongs.length === 0 ? (
-            "No songs found"
+            <span>No songs found</span>
           ) : (
             <>
               <span className="count-highlight">{filteredSongs.length}</span>{" "}
-              {filteredSongs.length === 1 ? "song" : "songs"}
+              <span className="count-text">{filteredSongs.length === 1 ? "song" : "songs"}</span>
             </>
           )}
-        </p>
+        </div>
       </div>
 
       {/* Section unifiée Filtres + Sort */}
@@ -188,6 +185,7 @@ const SongList = () => {
 
         {/* Cordes de guitare séparateur */}
         <div className="guitar-strings">
+          <div className="guitar-string"></div>
           <div className="guitar-string"></div>
           <div className="guitar-string"></div>
           <div className="guitar-string"></div>
