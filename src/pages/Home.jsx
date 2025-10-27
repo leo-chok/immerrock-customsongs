@@ -1,5 +1,4 @@
 import SongList from '../components/songs/SongList';
-import AddSongForm from '../components/songs/AddSongForm';
 import TitleWithFlames from '../components/effects/TitleWithFlames';
 import WelcomeModal from '../components/common/WelcomeModal';
 import './Home.css';
@@ -19,8 +18,6 @@ const Home = () => {
           Vote for your favorites and download them for free!
         </p>
       </section>
-
-      <AddSongForm />
 
       <section className="songs-section">
         <SongList />

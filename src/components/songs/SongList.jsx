@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSongs } from "../../hooks/useSongs";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import SongCard from "./SongCard";
+import AddSongForm from "./AddSongForm";
 import Loading from "../common/Loading";
 import "./SongList.css";
 
@@ -27,6 +28,7 @@ const SongList = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [fadeIn, setFadeIn] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   // Trigger fade-in animation when loading completes
   useEffect(() => {
@@ -108,7 +110,13 @@ const SongList = () => {
 
   return (
     <div className={`song-list-container ${fadeIn ? 'fade-in' : ''}`}>
-      {/* Section Search unifiée avec label et compteur */}
+      {/* Formulaire Add Song (toujours rendu, contrôlé par showAddForm) */}
+      <AddSongForm 
+        externalIsOpen={showAddForm} 
+        onToggle={(value) => setShowAddForm(typeof value === 'boolean' ? value : !showAddForm)} 
+      />
+
+      {/* Section Search unifiée avec compteur et bouton Add */}
       <div id="song-list-anchor" className="search-unified-section">
         <span className="search-label">Search:</span>
         <div className="search-wrapper-input">
@@ -131,7 +139,7 @@ const SongList = () => {
         </div>
         <div className="results-count">
           {filteredSongs.length === 0 ? (
-            <span>No songs found</span>
+            <span>No result</span>
           ) : (
             <>
               <span className="count-highlight">{filteredSongs.length}</span>{" "}
@@ -139,6 +147,29 @@ const SongList = () => {
             </>
           )}
         </div>
+        <div className="knob-icons">
+          {[0,1,2].map((i) => {
+            const base = filteredSongs.length || 0;
+            const angle = ((base * (i+1) * 37) % 360);
+            return (
+              <div
+                key={i}
+                className="css-knob"
+                style={{ '--knob-rotate': `${angle}deg` }}
+                aria-label="knob"
+              >
+                <div className="css-knob-index" />
+              </div>
+            );
+          })}
+          <span className="led-indicator" title="Power On" />
+        </div>
+        <button 
+          className={`add-song-btn ${showAddForm ? 'active' : ''}`}
+          onClick={() => setShowAddForm(!showAddForm)}
+        >
+          {showAddForm ? '✕ Close' : '+ Add a Song'}
+        </button>
       </div>
 
       {/* Section unifiée Filtres + Sort */}

@@ -1,3 +1,108 @@
+
+.led-indicator {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-left: 1.2rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 40%, #ff2222 80%, #a80000 100%);
+  box-shadow:
+    0 0 24px 8px #ff2222cc,
+    0 0 12px 4px #ff4d4d99,
+    0 0 2px 1px #fff8,
+    0 0 0 3px #a80000 inset;
+  border: 2.5px solid #a80000;
+  position: relative;
+  animation: led-glow-pulse 5s infinite alternate;
+}
+
+@keyframes led-glow-pulse {
+  0% {
+    box-shadow:
+      0 0 24px 8px #ff2222cc,
+      0 0 12px 4px #ff4d4d99,
+      0 0 2px 1px #fff8,
+      0 0 0 3px #a80000 inset;
+    filter: brightness(1.1);
+  }
+  100% {
+    box-shadow:
+      0 0 44px 18px #ff2222ee,
+      0 0 24px 8px #ff4d4dcc,
+      0 0 6px 2px #fff8,
+      0 0 0 3px #a80000 inset;
+    filter: brightness(1.35) saturate(1.2);
+  }
+}
+/* Reflet blanc sur la LED */
+.led-indicator::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 4px;
+  width: 7px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  opacity: 0.6;
+  pointer-events: none;
+  filter: blur(0.5px);
+}
+.knob-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2rem;
+  margin: 0;
+}
+
+.css-knob {
+  --knob-size: 56px;
+  width: var(--knob-size);
+  height: var(--knob-size);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 60% 35%, #fffbe7 0%, #ffe082 18%, #e6b94c 38%, #b88a1a 60%, #7a5a0a 100%),
+    repeating-conic-gradient(from 0deg, #ffe082 0deg 10deg, #b88a1a 10deg 20deg, #ffe082 20deg 30deg, #b88a1a 30deg 40deg);
+  box-shadow:
+    0 2px 12px 0 #0008,
+    0 0 0 2px #fff6 inset,
+    0 0 0 1.5px #b88a1a inset;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  transform: rotate(var(--knob-rotate, 0deg));
+  transition: transform 0.3s cubic-bezier(.7,1.7,.5,1);
+  overflow: visible;
+}
+.css-knob::before {
+  content: "";
+  position: absolute;
+  left: 10%;
+  top: 10%;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+.css-knob-index {
+  position: absolute;
+  left: 48%;
+  top: 84%;
+  width: 4px;
+  height: 22%;
+  background: #181818;
+  border-radius: 2px;
+  box-shadow: 0 0 2px #000a;
+  z-index: 3;
+  transform: translate(-50%, -100%);
+}
 .loading-wrapper {
   width: 100%;
   opacity: 1;
@@ -25,26 +130,80 @@
   transform: translateY(0);
 }
 
+/* Wrapper du formulaire Add Song */
+.add-form-wrapper {
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Search Section unifiée avec label et compteur */
 .search-unified-section {
   background: linear-gradient(
-    135deg,
-    rgba(47, 47, 47, 0.95) 0%,
-    rgba(39, 38, 38, 0.95) 100%
+    120deg,
+    #44464a 0%,
+    #232325 30%,
+    #595b5e 60%,
+    #232325 100%
   );
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(100, 100, 100, 0.3);
-  border-radius: 12px 12px 0px 0px;
+  background-blend-mode: lighten;
+  position: relative;
+  border: 1.5px solid #44464a;
+  border-radius: 14px 14px 0px 0px;
   padding: 2rem 1.5rem;
   margin-bottom: 0;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(180px, 320px) auto 1fr auto;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.1rem;
+  box-shadow: 0 2px 16px 0 rgba(40, 40, 40, 0.18),
+    0 1.5px 8px 0 rgba(0, 0, 0, 0.18) inset;
+  overflow: hidden;
+
+  /* Reflet glossy en haut */
+}
+.search-unified-section::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 38%;
+  border-radius: 14px 14px 40% 40%/40% 40% 60% 60%;
+  background: linear-gradient(
+    180deg,
+    rgba(180, 180, 180, 0.22) 0%,
+    rgba(80, 80, 80, 0.1) 80%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.search-unified-section::after {
+  /* Optionnel : bruit/noise léger pour texture métal */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.13;
+  background-image: url('data:image/svg+xml;utf8,<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2"/></filter><rect width="120" height="120" fill="white" filter="url(%23noise)"/></svg>');
+  background-size: 120px 120px;
 }
 
 .search-label {
   color: #b0b0b0;
-  font-family: 'New Rocker', 'Bebas Neue', sans-serif;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -54,17 +213,21 @@
 
 .search-wrapper-input {
   position: relative;
-  flex: 1;
+  min-width: 180px;
+  max-width: 320px;
+  width: 100%;
 }
 
 .flame-search-input {
-  width: 90%;
+  width: 100%;
+  min-width: 120px;
+  max-width: 260px;
   padding: 0.75rem 3rem 0.75rem 1rem;
   background: rgba(10, 10, 10, 0.6);
   border: 2px solid rgba(255, 69, 0, 0.3);
   border-radius: 8px;
   color: #ffffff;
-  font-family: 'New Rocker', 'Bebas Neue', sans-serif;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
   font-size: 0.9375rem;
   transition: all 0.3s ease-in-out;
 }
@@ -83,7 +246,7 @@
 
 .clear-search-btn {
   position: absolute;
-  right: 0.75rem;
+  right: 2.5rem;
   top: 50%;
   transform: translateY(-50%);
   width: 1.75rem;
@@ -115,15 +278,31 @@
 
 /* Compteur de résultats */
 .results-count {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
+  width: 160px;
+  height: 60px;
+  margin-left: 0.2rem;
+  margin-right: 0.5rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #e0e0e0;
   white-space: nowrap;
-  font-family: 'New Rocker', 'Bebas Neue', sans-serif;
-  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 2;
+  overflow: hidden;
+  gap: 0.5rem;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
   color: #b0b0b0;
   text-transform: uppercase;
   letter-spacing: 1px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  border-radius: 8px;
+  background: rgba(10, 10, 10, 0.6);
+  border: 2px solid rgba(255, 69, 0, 0.3);
+  padding: 0rem 1.5rem;
 }
 
 .count-highlight {
@@ -131,10 +310,53 @@
   font-weight: 700;
   font-size: 1.5rem;
   text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+  padding: 0;
 }
 
 .count-text {
   color: #b0b0b0;
+}
+
+/* Bouton Add a Song */
+.add-song-btn {
+  margin-left: auto;
+  min-width: 120px;
+  justify-self: end;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #ff4500, #ff6b35);
+  border: 2px solid rgba(255, 69, 0, 0.5);
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: "Archivo Black", "Bebas Neue", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+}
+
+.add-song-btn:hover {
+  background: linear-gradient(135deg, #ff6b35, #ff8c00);
+  border-color: rgba(255, 140, 0, 0.7);
+  box-shadow: 0 6px 20px rgba(255, 69, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+.add-song-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(255, 69, 0, 0.4);
+}
+
+.add-song-btn.active {
+  background: linear-gradient(135deg, #dc143c, #8b0000);
+  border-color: rgba(220, 20, 60, 0.7);
+}
+
+.add-song-btn.active:hover {
+  background: linear-gradient(135deg, #ff1744, #c62828);
 }
 
 /* Filters Section - TYPE et TUNING */
@@ -157,8 +379,8 @@
 
 .filter-by-label {
   color: #b0b0b0;
-  font-family: 'New Rocker', 'Bebas Neue', sans-serif;
-  font-size: 1.0rem;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   white-space: nowrap;
@@ -169,7 +391,7 @@
   display: flex;
   gap: 6rem;
   justify-content: center;
-  margin: 0 auto ;
+  margin: 0 auto;
 }
 
 .filter-group {
@@ -182,7 +404,7 @@
 
 .filter-group label {
   color: #ff8855;
-  font-family: 'New Rocker', 'Bebas Neue', sans-serif;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
   font-weight: 700;
   font-size: 0.875rem;
   text-transform: uppercase;
@@ -197,7 +419,7 @@
   background: rgba(10, 10, 10, 0.6);
   border: 2px solid rgba(255, 69, 0, 0.3);
   border-radius: 8px;
-  font-family: 'New Rocker', 'Bebas Neue', sans-serif;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
   color: #ffffff;
   font-size: 0.9375rem;
   cursor: pointer;
@@ -301,7 +523,7 @@
 
 .sort-by-label {
   color: #b0b0b0;
-  font-family: 'New Rocker', 'Bebas Neue', sans-serif;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -324,7 +546,7 @@
 
 .header-cell {
   color: #ff8855;
-  font-family: 'New Rocker', 'Bebas Neue', sans-serif;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
   font-size: 0.8125rem;
   font-weight: 400;
   text-transform: uppercase;
@@ -595,7 +817,7 @@
     background: rgba(10, 10, 10, 0.6);
     border: 2px solid rgba(255, 69, 0, 0.3);
     border-radius: 8px;
-    font-family: 'New Rocker', 'Bebas Neue', sans-serif;
+    font-family: "New Rocker", "Bebas Neue", sans-serif;
     color: #ffffff;
     font-size: 0.9375rem;
     cursor: pointer;
