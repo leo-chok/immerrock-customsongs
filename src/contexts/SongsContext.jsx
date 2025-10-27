@@ -22,7 +22,7 @@ export const SongsProvider = ({ children }) => {
     
     // Start timer for minimum loading duration
     const startTime = Date.now();
-    const minLoadingTime = 3000; // 3 seconds
+    const minLoadingTime = 2000; // 2 seconds
     
     try {
       const response = await fetch(`${API_URL}/songs`);

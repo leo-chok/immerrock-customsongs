@@ -2,9 +2,14 @@ import { useState } from 'react';
 import { useSongs } from '../../hooks/useSongs';
 import './AddSongForm.css';
 
-const AddSongForm = () => {
+const AddSongForm = ({ externalIsOpen, onToggle }) => {
   const { addSong } = useSongs();
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  
+  // Utiliser externalIsOpen si fourni, sinon utiliser internalIsOpen
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const setIsOpen = onToggle || setInternalIsOpen;
+  
   const [formData, setFormData] = useState({
     artist: '',
     title: '',
@@ -139,16 +144,11 @@ const AddSongForm = () => {
 
   return (
     <>
-      <button className="open-form-btn" onClick={() => setIsOpen(true)}>
-        <span className="btn-text">Add a Song</span>
-      </button>
-
       {isOpen && (
         <div className="modal-overlay" onClick={handleClose}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Add a Song</h2>
-              <button className="close-btn" onClick={handleClose}>×</button>
             </div>
 
             <form onSubmit={handleSubmit} className="song-form">
