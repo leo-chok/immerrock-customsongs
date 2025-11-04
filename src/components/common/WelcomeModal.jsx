@@ -44,8 +44,16 @@ const WelcomeModal = () => {
       >
         
 
+
         <div className="welcome-modal-header">
           <h2>Welcome!</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '0.5rem' }}>
+            <img
+              src="/eli_happy.png"
+              alt="Mascot Eli Happy"
+              style={{ maxWidth: 300, width: '100%', height: 'auto', marginBottom: 8 }}
+            />
+          </div>
         </div>
 
         <div className="welcome-modal-body">

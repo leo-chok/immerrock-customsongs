@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
+import AdminPasswordModal from "../admin/AdminPasswordModal";
+import { setAdminToken } from "../../utils/auth";
+import { useNavigate } from "react-router-dom";
 import { useSongs } from "../../hooks/useSongs";
-import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { FaArrowUp, FaArrowDown, FaPlusCircle } from "react-icons/fa";
 import SongCard from "./SongCard";
 import AddSongForm from "./AddSongForm";
 import Loading from "../common/Loading";
@@ -8,7 +11,10 @@ import "./SongList.css";
 
 const SONGS_PER_PAGE = 20;
 
+const SECRET_PHRASE = "letmerock"; // à personnaliser
+
 const SongList = () => {
+  const navigate = useNavigate();
   const {
     filteredSongs,
     loading,
@@ -29,6 +35,8 @@ const SongList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [fadeIn, setFadeIn] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
+  const [adminError, setAdminError] = useState("");
 
   // Trigger fade-in animation when loading completes
   useEffect(() => {
@@ -50,6 +58,34 @@ const SongList = () => {
   const handleSearchChange = (value) => {
     setSearchTerm(value);
     setCurrentPage(1);
+    // Détection phrase secrète
+    if (value.trim().toLowerCase() === SECRET_PHRASE) {
+      setShowAdminModal(true);
+      setAdminError("");
+    }
+  };
+
+  // Auth admin
+  // Utilise la variable d'env ou fallback Vercel prod
+  const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "https://immerrock-customsongs-backend.onrender.com";
+  const handleAdminLogin = async (password) => {
+    setAdminError("");
+    try {
+      const res = await fetch(`${API_URL}/api/auth/admin-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Erreur d'authentification");
+      setAdminToken(data.token);
+      setShowAdminModal(false);
+      navigate("/admin");
+    } catch (err) {
+      setAdminError(err.message);
+    }
   };
 
   const handleColumnSort = (column) => {
@@ -102,6 +138,11 @@ const SongList = () => {
         <div className="error-message">
           <span className="error-icon">⚠️</span>
           <h3>Erreur de chargement</h3>
+          <img
+            src="/eli_no_result.png"
+            alt="Error Illustration"
+            className="error-illustration"
+          />
           <p>{error}</p>
         </div>
       </div>
@@ -109,11 +150,19 @@ const SongList = () => {
   }
 
   return (
-    <div className={`song-list-container ${fadeIn ? 'fade-in' : ''}`}>
+    <div className={`song-list-container ${fadeIn ? "fade-in" : ""}`}>
+      <AdminPasswordModal
+        isOpen={showAdminModal}
+        onClose={() => setShowAdminModal(false)}
+        onSubmit={handleAdminLogin}
+        error={adminError}
+      />
       {/* Formulaire Add Song (toujours rendu, contrôlé par showAddForm) */}
-      <AddSongForm 
-        externalIsOpen={showAddForm} 
-        onToggle={(value) => setShowAddForm(typeof value === 'boolean' ? value : !showAddForm)} 
+      <AddSongForm
+        externalIsOpen={showAddForm}
+        onToggle={(value) =>
+          setShowAddForm(typeof value === "boolean" ? value : !showAddForm)
+        }
       />
 
       {/* Section Search unifiée avec compteur et bouton Add */}
@@ -143,19 +192,21 @@ const SongList = () => {
           ) : (
             <>
               <span className="count-highlight">{filteredSongs.length}</span>{" "}
-              <span className="count-text">{filteredSongs.length === 1 ? "song" : "songs"}</span>
+              <span className="count-text">
+                {filteredSongs.length === 1 ? "song" : "songs"}
+              </span>
             </>
           )}
         </div>
         <div className="knob-icons">
-          {[0,1,2].map((i) => {
+          {[0, 1, 2].map((i) => {
             const base = filteredSongs.length || 0;
-            const angle = ((base * (i+1) * 37) % 360);
+            const angle = (base * (i + 1) * 37) % 360;
             return (
               <div
                 key={i}
                 className="css-knob"
-                style={{ '--knob-rotate': `${angle}deg` }}
+                style={{ "--knob-rotate": `${angle}deg` }}
                 aria-label="knob"
               >
                 <div className="css-knob-index" />
@@ -164,11 +215,11 @@ const SongList = () => {
           })}
           <span className="led-indicator" title="Power On" />
         </div>
-        <button 
-          className={`add-song-btn ${showAddForm ? 'active' : ''}`}
+        <button
+          className={`add-song-btn ${showAddForm ? "active" : ""}`}
           onClick={() => setShowAddForm(!showAddForm)}
         >
-          {showAddForm ? '✕ Close' : '+ Add a Song'}
+          <FaPlusCircle style={{ top: "50%", transform: "translateY(10%)", scale: "1.5", marginRight: "0.5rem" }} /> Add a Song
         </button>
       </div>
 
@@ -226,35 +277,35 @@ const SongList = () => {
 
         {/* En-têtes de colonnes cliquables */}
         <div className="sort-row">
-            <span className="sort-by-label">Sort by:</span>
-            
-            {/* Dropdown pour mobile/tablette */}
-            <select
-              className="sort-select-mobile"
-              value={`${sortBy}-${sortOrder}`}
-              onChange={(e) => {
-                const [column, order] = e.target.value.split('-');
-                setSortBy(column);
-                setSortOrder(order);
-                setCurrentPage(1);
-              }}
-            >
-              <option value="title-asc">Song (A-Z)</option>
-              <option value="title-desc">Song (Z-A)</option>
-              <option value="type-asc">Type (A-Z)</option>
-              <option value="type-desc">Type (Z-A)</option>
-              <option value="tuning-asc">Tuning (A-Z)</option>
-              <option value="tuning-desc">Tuning (Z-A)</option>
-              <option value="author-asc">Author (A-Z)</option>
-              <option value="author-desc">Author (Z-A)</option>
-              <option value="popular-asc">Votes (Low-High)</option>
-              <option value="popular-desc">Votes (High-Low)</option>
-              <option value="downloads-asc">Downloads (Low-High)</option>
-              <option value="downloads-desc">Downloads (High-Low)</option>
-            </select>
+          <span className="sort-by-label">Sort by:</span>
 
-            {/* Headers cliquables pour desktop */}
-            <div className="table-header">
+          {/* Dropdown pour mobile/tablette */}
+          <select
+            className="sort-select-mobile"
+            value={`${sortBy}-${sortOrder}`}
+            onChange={(e) => {
+              const [column, order] = e.target.value.split("-");
+              setSortBy(column);
+              setSortOrder(order);
+              setCurrentPage(1);
+            }}
+          >
+            <option value="title-asc">Song (A-Z)</option>
+            <option value="title-desc">Song (Z-A)</option>
+            <option value="type-asc">Type (A-Z)</option>
+            <option value="type-desc">Type (Z-A)</option>
+            <option value="tuning-asc">Tuning (A-Z)</option>
+            <option value="tuning-desc">Tuning (Z-A)</option>
+            <option value="author-asc">Author (A-Z)</option>
+            <option value="author-desc">Author (Z-A)</option>
+            <option value="popular-asc">Votes (Low-High)</option>
+            <option value="popular-desc">Votes (High-Low)</option>
+            <option value="downloads-asc">Downloads (Low-High)</option>
+            <option value="downloads-desc">Downloads (High-Low)</option>
+          </select>
+
+          {/* Headers cliquables pour desktop */}
+          <div className="table-header">
             <div
               className={`header-cell title-header ${
                 sortBy === "title" ? "active" : ""
@@ -386,6 +437,11 @@ const SongList = () => {
       ) : (
         <div className="no-results">
           <h3>No songs found</h3>
+          <img
+            src="/eli_no_result.png"
+            alt="Error Illustration"
+            className="error-illustration"
+          />
           <p>Try adjusting your filters or search</p>
         </div>
       )}

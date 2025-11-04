@@ -16,13 +16,15 @@ const AlbumCard3D = ({ artist, title, isInline = false }) => {
     }
   }, [artist, title]);
 
+  const API_URL = import.meta.env.VITE_API_URL || "https://immerrock-customsongs-backend.onrender.com";
+
   const fetchSpotifyData = async () => {
     setLoading(true);
     setError(null);
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/spotify/search?artist=${encodeURIComponent(artist)}&title=${encodeURIComponent(title)}`
+        `${API_URL}/api/spotify/search?artist=${artist}&title=${title}`
       );
 
       if (!response.ok) {
