@@ -1,0 +1,1198 @@
+
+.led-indicator {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-left: 1.2rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 40%, #ff2222 80%, #a80000 100%);
+  box-shadow:
+    0 0 24px 8px #ff2222cc,
+    0 0 12px 4px #ff4d4d99,
+    0 0 2px 1px #fff8,
+    0 0 0 3px #a80000 inset;
+  border: 2.5px solid #a80000;
+  position: relative;
+  animation: led-glow-pulse 5s infinite alternate;
+}
+
+@keyframes led-glow-pulse {
+  0% {
+    box-shadow:
+      0 0 24px 8px #ff2222cc,
+      0 0 12px 4px #ff4d4d99,
+      0 0 2px 1px #fff8,
+      0 0 0 3px #a80000 inset;
+    filter: brightness(1.1);
+  }
+  100% {
+    box-shadow:
+      0 0 44px 18px #ff2222ee,
+      0 0 24px 8px #ff4d4dcc,
+      0 0 6px 2px #fff8,
+      0 0 0 3px #a80000 inset;
+    filter: brightness(1.35) saturate(1.2);
+  }
+}
+/* Reflet blanc sur la LED */
+.led-indicator::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 4px;
+  width: 7px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  opacity: 0.6;
+  pointer-events: none;
+  filter: blur(0.5px);
+}
+.knob-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2rem;
+  margin: 0;
+}
+
+.css-knob {
+  --knob-size: 56px;
+  width: var(--knob-size);
+  height: var(--knob-size);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 60% 35%, #fffbe7 0%, #ffe082 18%, #e6b94c 38%, #b88a1a 60%, #7a5a0a 100%),
+    repeating-conic-gradient(from 0deg, #ffe082 0deg 10deg, #b88a1a 10deg 20deg, #ffe082 20deg 30deg, #b88a1a 30deg 40deg);
+  box-shadow:
+    0 2px 12px 0 #0008,
+    0 0 0 2px #fff6 inset,
+    0 0 0 1.5px #b88a1a inset;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  transform: rotate(var(--knob-rotate, 0deg));
+  transition: transform 0.3s cubic-bezier(.7,1.7,.5,1);
+  overflow: visible;
+}
+.css-knob::before {
+  content: "";
+  position: absolute;
+  left: 10%;
+  top: 10%;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+.css-knob-index {
+  position: absolute;
+  left: 48%;
+  top: 84%;
+  width: 4px;
+  height: 22%;
+  background: #181818;
+  border-radius: 2px;
+  box-shadow: 0 0 2px #000a;
+  z-index: 3;
+  transform: translate(-50%, -100%);
+}
+.loading-wrapper {
+  width: 100%;
+  opacity: 1;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.song-list-container {
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.song-list-container.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Wrapper du formulaire Add Song */
+.add-form-wrapper {
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Search Section unifiée avec label et compteur */
+.search-unified-section {
+  background: linear-gradient(
+    120deg,
+    #44464a 0%,
+    #232325 30%,
+    #595b5e 60%,
+    #232325 100%
+  );
+  background-blend-mode: lighten;
+  position: relative;
+  border: 1.5px solid #44464a;
+  border-radius: 14px 14px 0px 0px;
+  padding: 2rem 1.5rem;
+  margin-bottom: 0;
+  display: grid;
+  grid-template-columns: auto minmax(180px, 320px) auto 1fr auto;
+  align-items: center;
+  gap: 1.1rem;
+  box-shadow: 0 2px 16px 0 rgba(40, 40, 40, 0.18),
+    0 1.5px 8px 0 rgba(0, 0, 0, 0.18) inset;
+  overflow: hidden;
+
+  /* Reflet glossy en haut */
+}
+.search-unified-section::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 38%;
+  border-radius: 14px 14px 40% 40%/40% 40% 60% 60%;
+  background: linear-gradient(
+    180deg,
+    rgba(180, 180, 180, 0.22) 0%,
+    rgba(80, 80, 80, 0.1) 80%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.search-unified-section::after {
+  /* Optionnel : bruit/noise léger pour texture métal */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.13;
+  background-image: url('data:image/svg+xml;utf8,<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2"/></filter><rect width="120" height="120" fill="white" filter="url(%23noise)"/></svg>');
+  background-size: 120px 120px;
+}
+
+.search-label {
+  color: #b0b0b0;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.search-wrapper-input {
+  position: relative;
+  min-width: 180px;
+  max-width: 320px;
+  width: 100%;
+}
+
+.flame-search-input {
+  width: 100%;
+  min-width: 120px;
+  max-width: 260px;
+  padding: 0.75rem 3rem 0.75rem 1rem;
+  height: 40px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  background: rgba(10, 10, 10, 0.6);
+  border: 2px solid rgba(255, 69, 0, 0.3);
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  font-size: 0.9375rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.flame-search-input::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+.flame-search-input:focus {
+  outline: none;
+  border-color: #ff4500;
+  background: rgba(10, 10, 10, 0.8);
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 2.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: rgba(255, 69, 0, 0.1);
+  border: 2px solid rgba(255, 69, 0, 0.3);
+  color: #ff8855;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.clear-search-btn:hover {
+  background: rgba(255, 69, 0, 0.3);
+  border-color: rgba(255, 69, 0, 0.6);
+  color: #ffaa66;
+  box-shadow: 0 0 15px rgba(255, 69, 0, 0.4);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.clear-search-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Compteur de résultats */
+.results-count {
+  width: 160px;
+  margin-left: 0.6rem;
+  margin-right: 0.5rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 2;
+  overflow: hidden;
+  gap: 0.5rem;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  color: #b0b0b0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  border-radius: 8px;
+  background: rgba(10, 10, 10, 0.6);
+  border: 2px solid rgba(255, 69, 0, 0.3);
+  padding: 0.6rem 1.5rem;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.count-highlight {
+  color: #ff6b35;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+  padding: 0;
+}
+
+.count-text {
+  color: #b0b0b0;
+}
+
+/* Bouton Add a Song */
+.add-song-btn {
+  margin-left: auto;
+  min-width: 120px;
+  justify-self: end;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #ff4500, #ff6b35);
+  border: 2px solid rgba(255, 69, 0, 0.5);
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+}
+
+/* Responsive adjustments: hide knobs and add button on smaller screens */
+@media (max-width: 1024px) {
+  /* Hide decorative knobs but keep the LED; hide the Add button to simplify the header */
+  .knob-icons .css-knob {
+    display: none !important;
+  }
+  .knob-icons {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 0.6rem;
+  }
+  .knob-icons .led-indicator {
+    display: inline-block;
+    margin-left: 0.2rem;
+  }
+  .add-song-btn {
+    display: none !important;
+  }
+
+  /* Make the search area take most of the width */
+  .search-unified-section {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .search-wrapper-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .flame-search-input {
+    height: 40px;
+    padding-right: 2.2rem; /* keep some space for clear button */
+  }
+
+  /* Remove the numeric results count on smaller screens */
+  .results-count {
+    display: none !important;
+  }
+
+  /* Ensure clear button stays positioned correctly */
+  .clear-search-btn {
+    right: 0.8rem;
+  }
+
+  /* Slightly shrink labels to save space */
+  .search-label {
+    font-size: 0.9rem;
+  }
+}
+
+.add-song-btn:hover {
+  background: linear-gradient(135deg, #ff6b35, #ff8c00);
+  border-color: rgba(255, 140, 0, 0.7);
+  box-shadow: 0 6px 20px rgba(255, 69, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+.add-song-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(255, 69, 0, 0.4);
+}
+
+.add-song-btn.active {
+  background: linear-gradient(135deg, #dc143c, #8b0000);
+  border-color: rgba(220, 20, 60, 0.7);
+}
+
+.add-song-btn.active:hover {
+  background: linear-gradient(135deg, #ff1744, #c62828);
+}
+
+/* Filters Section - TYPE et TUNING */
+.filters-section {
+  background: linear-gradient(
+    135deg,
+    rgba(31, 31, 31, 0.95) 0%,
+    rgba(26, 26, 26, 0.95) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(100, 100, 100, 0.3);
+  border-radius: 0px 0px 12px 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.5rem;
+}
+
+.filter-by-label {
+  color: #b0b0b0;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.filters-wrapper {
+  display: flex;
+  gap: 6rem;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 0 1 auto;
+  min-width: 350px;
+}
+
+.filter-group label {
+  color: #ff8855;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.filter-select {
+  flex: 1;
+  width: 100px;
+  padding: 0.3rem 1rem;
+  background: rgba(10, 10, 10, 0.6);
+  border: 2px solid rgba(255, 69, 0, 0.3);
+  border-radius: 8px;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  color: #ffffff;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  accent-color: #ff4500;
+}
+
+.filter-select:hover {
+  border-color: rgba(255, 69, 0, 0.5);
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #ff4500;
+  box-shadow: 0 0 15px rgba(255, 69, 0, 0.3);
+}
+
+.filter-select option {
+  background: #1a1a1a;
+  color: #ffffff;
+  padding: 0.5rem;
+}
+
+/* Section unifiée pour filtres + sort */
+.unified-controls-section {
+  background: linear-gradient(
+    135deg,
+    rgba(31, 31, 31, 0.95) 0%,
+    rgba(26, 26, 26, 0.95) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(100, 100, 100, 0.3);
+  border-radius: 0 0 12px 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Filters Row dans la section unifiée */
+.unified-controls-section .filters-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.5rem;
+  padding: 0;
+}
+
+/* Sort Row dans la section unifiée */
+.unified-controls-section .sort-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0;
+}
+
+/* Sort select mobile - caché par défaut */
+.sort-select-mobile {
+  display: none;
+}
+
+/* Cordes de guitare séparateur */
+.guitar-strings {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0.75rem 0;
+  margin: 0.5rem 0;
+}
+
+.guitar-string {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(150, 150, 150, 0.3) 10%,
+    rgba(150, 150, 150, 0.6) 50%,
+    rgba(150, 150, 150, 0.3) 90%,
+    transparent 100%
+  );
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Table Header Wrapper - Conteneur avec label "Sort by:" */
+.table-header-wrapper {
+  background: linear-gradient(
+    135deg,
+    rgba(31, 31, 31, 0.95) 0%,
+    rgba(26, 26, 26, 0.95) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(100, 100, 100, 0.3);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.sort-by-label {
+  color: #b0b0b0;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  font-weight: 900;
+}
+
+/* Table Header - En-têtes de colonnes cliquables */
+.table-header {
+  display: grid;
+  grid-template-columns: 1.5fr 220px 120px 150px 180px 100px 160px;
+  gap: 1rem;
+  align-items: center;
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.header-cell {
+  color: #ff8855;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.header-cell:not(.action-header):hover {
+  color: #ffaa66;
+  text-shadow: 0 0 10px rgba(255, 69, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.header-cell.active {
+  color: #ffcc88;
+  text-shadow: 0 0 15px rgba(255, 69, 0, 0.8);
+  font-weight: 600;
+}
+
+.action-header {
+  cursor: default;
+  justify-content: center;
+}
+
+.title-header {
+  justify-content: flex-start;
+  padding-left: 1.5rem;
+}
+
+.type-header {
+  justify-content: flex-start;
+  padding-left: 1rem;
+}
+
+.tuning-header,
+.votes-header,
+.downloads-header {
+  justify-content: center;
+}
+
+.author-header {
+  justify-content: flex-start;
+}
+
+/* Song Table - Liste en tableau */
+.song-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 2rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 1.5rem 0;
+}
+
+.pagination-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(31, 31, 31, 0.95) 0%,
+    rgba(26, 26, 26, 0.95) 100%
+  );
+  border: 2px solid rgba(255, 69, 0, 0.5) !important;
+  color: #ff8855 !important;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  border-color: #ff4500 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 69, 0, 0.3) 0%,
+    rgba(255, 107, 53, 0.3) 100%
+  );
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+  color: #ffaa66 !important;
+  transform: translateY(-2px);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: rgba(176, 176, 176, 0.2) !important;
+  color: #505050 !important;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pagination-number {
+  background: linear-gradient(
+    135deg,
+    rgba(31, 31, 31, 0.95) 0%,
+    rgba(26, 26, 26, 0.95) 100%
+  );
+  border: 2px solid rgba(255, 69, 0, 0.5) !important;
+  color: #ff8855 !important;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-number:hover {
+  border-color: #ff4500 !important;
+  color: #ffaa66 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 69, 0, 0.3) 0%,
+    rgba(255, 107, 53, 0.3) 100%
+  );
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+.pagination-number.active {
+  background: linear-gradient(135deg, #ff4500 0%, #ff6b35 100%) !important;
+  border-color: #ff6b35 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.7);
+  transform: scale(1.1);
+}
+
+.pagination-dots {
+  color: #ff8855;
+  padding: 0 0.25rem;
+  font-weight: bold;
+}
+
+.page-info {
+  color: #ff8855;
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+}
+
+/* Loading Skeleton */
+.loading-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skeleton-card {
+  background: linear-gradient(
+    90deg,
+    rgba(31, 31, 31, 0.4) 0%,
+    rgba(42, 42, 42, 0.4) 50%,
+    rgba(31, 31, 31, 0.4) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+  height: 80px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Error Message */
+.error-message {
+  background: rgba(220, 20, 60, 0.1);
+  border: 2px solid rgba(220, 20, 60, 0.5);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  color: #ff6b6b;
+}
+
+.error-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.error-message h3 {
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+.error-message p {
+  margin: 0;
+  color: #b0b0b0;
+}
+
+/* No Results */
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  text-align: center;
+  padding: 3rem 1rem;
+  background: rgba(31, 31, 31, 0.5);
+  border: 2px dashed rgba(255, 69, 0, 0.3);
+  border-radius: 12px;
+}
+
+.no-results h3,
+.no-results p {
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+}
+
+.error-illustration {
+  display: block;
+  margin: 1.5rem auto 1rem auto;
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 24px #000a);
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.no-results h3 {
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+.no-results p {
+  color: #b0b0b0;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .song-table {
+    gap: 0;
+  }
+
+  /* Section unifiée - tablette */
+  .unified-controls-section {
+    padding: 0.875rem 1rem;
+  }
+
+  .filters-wrapper {
+    gap: 3rem;
+  }
+
+  /* Afficher le dropdown de sort et cacher les headers cliquables */
+  .sort-select-mobile {
+    display: block;
+    flex: 1;
+    padding: 0.5rem 1rem;
+    background: rgba(10, 10, 10, 0.6);
+    border: 2px solid rgba(255, 69, 0, 0.3);
+    border-radius: 8px;
+    font-family: "New Rocker", "Bebas Neue", sans-serif;
+    color: #ffffff;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    accent-color: #ff4500;
+  }
+
+  .sort-select-mobile:hover {
+    border-color: rgba(255, 69, 0, 0.5);
+  }
+
+  .sort-select-mobile:focus {
+    outline: none;
+    border-color: #ff4500;
+    box-shadow: 0 0 15px rgba(255, 69, 0, 0.3);
+  }
+
+  .sort-select-mobile option {
+    background: #1a1a1a;
+    color: #ffffff;
+    padding: 0.5rem;
+  }
+
+  /* Cacher les headers cliquables sur tablette/mobile */
+  .table-header {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Searchbar mobile */
+  .search-wrapper-input {
+    width: 90%;
+  }
+
+  .flame-search-input {
+    padding: 0.875rem 3rem 0.875rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+
+  .clear-search-btn {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 1.25rem;
+  }
+
+  /* Search unified section - mobile */
+  .search-unified-section {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .search-label {
+    font-size: 1rem;
+  }
+
+  .results-count {
+    font-size: 1rem;
+  }
+
+  .count-highlight {
+    font-size: 1.25rem;
+  }
+
+  /* Section unifiée - mobile */
+  .unified-controls-section {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  /* Filters row - passer en colonne sur mobile */
+  .unified-controls-section .filters-row {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .filter-by-label {
+    font-size: 0.9rem;
+  }
+
+  .filters-wrapper {
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .filter-group {
+    min-width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .filter-group label {
+    font-size: 0.8125rem;
+  }
+
+  .filter-select {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Guitar strings - réduire sur mobile */
+  .guitar-strings {
+    padding: 0.5rem 0;
+    margin: 0.25rem 0;
+    gap: 2px;
+  }
+
+  /* Sort row - mobile */
+  .unified-controls-section .sort-row {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .sort-by-label {
+    font-size: 0.9rem;
+  }
+
+  .sort-select-mobile {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.875rem;
+  }
+
+  /* Table mobile */
+  .song-table {
+    gap: 0.5rem;
+  }
+
+  /* Pagination mobile */
+  .pagination {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .pagination-btn {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .pagination-number {
+    width: 36px;
+    height: 36px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 425px) {
+  /* Container principal */
+  .song-list-container {
+    width: 100%;
+  }
+
+  /* Searchbar - prend toute la largeur */
+  .search-section {
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+
+  .search-wrapper-input {
+    width: 100%;
+  }
+
+  .flame-search-input {
+    padding: 0.75rem 2.75rem 0.75rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 8px;
+  }
+
+  .clear-search-btn {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1rem;
+    right: 0.75rem;
+  }
+
+  /* Search unified section - compact mobile */
+  .search-unified-section {
+    padding: 0.875rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .search-label {
+    font-size: 0.9rem;
+    flex-basis: 100%;
+  }
+
+  .search-wrapper-input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .results-count {
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  .count-highlight {
+    font-size: 1.125rem;
+  }
+
+  /* Section unifiée - très compact */
+  .unified-controls-section {
+    padding: 0.875rem;
+    gap: 0.625rem;
+  }
+
+  /* Filters row */
+  .unified-controls-section .filters-row {
+    gap: 0.75rem;
+  }
+
+  .filter-by-label {
+    font-size: 0.8125rem;
+  }
+
+  .filters-wrapper {
+    gap: 0.75rem;
+  }
+
+  .filter-group label {
+    font-size: 0.75rem;
+  }
+
+  .filter-select {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  /* Guitar strings - plus petit */
+  .guitar-strings {
+    padding: 0.4rem 0;
+    margin: 0.2rem 0;
+    gap: 2px;
+  }
+
+  /* Sort row */
+  .unified-controls-section .sort-row {
+    gap: 0.625rem;
+  }
+
+  .sort-by-label {
+    font-size: 0.8125rem;
+  }
+
+  .sort-select-mobile {
+    font-size: 0.8125rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  /* Table */
+  .song-table {
+    gap: 0.625rem;
+  }
+
+  /* Pagination - ultra compact */
+  .pagination {
+    gap: 0.5rem;
+    padding: 1rem 0;
+  }
+
+  .pagination-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .pagination-number {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8125rem;
+  }
+
+  .page-info {
+    font-size: 0.8125rem;
+  }
+
+  /* No results */
+  .no-results {
+    padding: 2rem 1rem;
+  }
+
+  .no-results-icon {
+    font-size: 3rem;
+  }
+
+  .no-results h3 {
+    font-size: 1.25rem;
+  }
+
+  .no-results p {
+    font-size: 0.875rem;
+  }
+}

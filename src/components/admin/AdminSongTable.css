@@ -1,0 +1,126 @@
+.admin-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin: 32px 0 0 0;
+}
+.admin-pagination-btn {
+  background: #222;
+  color: #ffd700;
+  border: 1.5px solid #ffd700;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 1.08rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.admin-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.admin-pagination-btn:not(:disabled):hover {
+  background: #ffd700;
+  color: #222;
+}
+.admin-pagination-info {
+  color: #ffd700;
+  font-size: 1.08rem;
+  font-weight: 500;
+}
+
+.admin-song-table-wrapper {
+  margin: 40px auto;
+  max-width: 100%;
+  min-width: 80%;
+  padding: 40px 32px;
+}
+
+.admin-table-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
+.admin-table-search {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1.5px solid #ffd700;
+  background: rgba(34, 34, 34, 0.95);
+  color: #ffd700;
+  font-size: 1.08rem;
+  outline: none;
+  min-width: 340px;
+  box-shadow: 0 2px 8px #000a;
+}
+
+.admin-song-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+  border-radius: 18px;
+  overflow: hidden;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+}
+
+.admin-song-table th,
+.admin-song-table td {
+  padding: 18px 14px;
+  text-align: left;
+  border-bottom: 1.5px solid #ffd70022;
+  color: #fff;
+  font-size: 1.08rem;
+  overflow: hidden;
+}
+
+.admin-song-table th {
+  background: rgba(40, 40, 40, 0.92);
+  color: #ffd700;
+  font-size: 1.18rem;
+  overflow: hidden;
+
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #ffd70066;
+}
+
+.admin-song-table tbody tr {
+  transition: background 0.2s;
+}
+.admin-song-table tbody tr:hover {
+  background: rgba(255, 215, 0, 0.08);
+}
+
+.admin-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  margin-right: 10px;
+  transition: color 0.2s, transform 0.2s;
+  vertical-align: middle;
+}
+.admin-action-btn.edit {
+  color: #4da6ff;
+}
+.admin-action-btn.edit:hover {
+  color: #1e90ff;
+  transform: scale(1.15);
+}
+.admin-action-btn.delete {
+  color: #ff4d4d;
+}
+.admin-action-btn.delete:hover {
+  color: #ff1a1a;
+  transform: scale(1.15);
+}
+
+.admin-table-loading,
+.admin-table-error {
+  text-align: center;
+  color: #ffd700;
+  font-size: 1.25rem;
+  margin: 48px 0;
+}
