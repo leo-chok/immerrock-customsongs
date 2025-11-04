@@ -3,7 +3,7 @@ import { createContext, useState, useEffect, useCallback } from 'react';
 export const SongsContext = createContext();
 
 // API URL - Change according to your environment
-const API_URL = import.meta.env.VITE_API_URL || 'https://immerrock-customsongs-back.vercel.app/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://immerrock-customsongs-backend.onrender.com';
 
 export const SongsProvider = ({ children }) => {
   const [songs, setSongs] = useState([]);
@@ -25,7 +25,7 @@ export const SongsProvider = ({ children }) => {
     const minLoadingTime = 2000; // 2 seconds
     
     try {
-      const response = await fetch(`${API_URL}/songs`);
+      const response = await fetch(`${API_URL}/api/songs`);
       if (!response.ok) throw new Error('Error loading songs');
       const data = await response.json();
       
@@ -45,20 +45,66 @@ export const SongsProvider = ({ children }) => {
     }
   }, []);
 
+  // Edit a song (admin)
+  const editSong = async (songId, updatedData, adminToken) => {
+    try {
+      const response = await fetch(`${API_URL}/api/admin/songs/${songId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`,
+        },
+        body: JSON.stringify(updatedData),
+      });
+      if (!response.ok) throw new Error('Error updating song');
+      const updatedSong = await response.json();
+      setSongs(prev => prev.map(song => song._id === songId ? updatedSong : song));
+      return { success: true, song: updatedSong };
+    } catch (err) {
+      console.error('Error:', err);
+      return { success: false, error: err.message };
+    }
+  };
+
+  // Delete a song (admin)
+  const deleteSong = async (songId, adminToken) => {
+    try {
+      const response = await fetch(`${API_URL}/api/admin/songs/${songId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+        },
+      });
+      if (!response.ok) throw new Error('Error deleting song');
+      setSongs(prev => prev.filter(song => song._id !== songId));
+      return { success: true };
+    } catch (err) {
+      console.error('Error:', err);
+      return { success: false, error: err.message };
+    }
+  };
+
   // Add a song
   const addSong = async (songData) => {
     try {
-      const response = await fetch(`${API_URL}/songs`, {
+      const response = await fetch(`${API_URL}/api/songs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(songData),
       });
-      if (!response.ok) throw new Error('Erreur lors de l\'ajout de la chanson');
+      if (!response.ok) {
+        let msg = 'Error adding song';
+        try {
+          const errBody = await response.json();
+          msg = errBody.message || msg;
+        } catch (e) {}
+        throw new Error(msg);
+      }
       const newSong = await response.json();
       setSongs(prev => [newSong, ...prev]);
       return { success: true, song: newSong };
     } catch (err) {
-      console.error('Erreur:', err);
+      console.error('Error:', err);
       return { success: false, error: err.message };
     }
   };
@@ -66,19 +112,31 @@ export const SongsProvider = ({ children }) => {
   // Voter pour une chanson
   const voteSong = async (songId, voteType) => {
     try {
-      const response = await fetch(`${API_URL}/songs/${songId}/vote`, {
-        method: 'POST',
+      // backend expects { type: 'up' | 'down' }
+      const payloadType = (voteType === 'upvote' || voteType === 'up') ? 'up' : 'down';
+      const response = await fetch(`${API_URL}/api/songs/${songId}/vote`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ voteType }),
+        body: JSON.stringify({ type: payloadType }),
       });
-      if (!response.ok) throw new Error('Erreur lors du vote');
+      if (!response.ok) {
+        // try to parse server message
+        let msg = 'Error during voting';
+        try {
+          const errBody = await response.json();
+          msg = errBody.message || msg;
+        } catch (e) {
+          // ignore parse error
+        }
+        throw new Error(msg);
+      }
       const updatedSong = await response.json();
       setSongs(prev => prev.map(song => 
         song._id === songId ? updatedSong : song
       ));
       return { success: true };
     } catch (err) {
-      console.error('Erreur:', err);
+      console.error('Error:', err);
       return { success: false, error: err.message };
     }
   };
@@ -86,17 +144,24 @@ export const SongsProvider = ({ children }) => {
   // Incrémenter le compteur de téléchargements
   const incrementDownload = async (songId) => {
     try {
-      const response = await fetch(`${API_URL}/songs/${songId}/download`, {
-        method: 'POST',
+      const response = await fetch(`${API_URL}/api/songs/${songId}/download`, {
+        method: 'PATCH',
       });
-      if (!response.ok) throw new Error('Erreur lors de l\'incrémentation');
+      if (!response.ok) {
+        let msg = 'Error incrementing download count';
+        try {
+          const errBody = await response.json();
+          msg = errBody.message || msg;
+        } catch (e) {}
+        throw new Error(msg);
+      }
       const updatedSong = await response.json();
       setSongs(prev => prev.map(song => 
         song._id === songId ? updatedSong : song
       ));
       return { success: true };
     } catch (err) {
-      console.error('Erreur:', err);
+      console.error('Error:', err);
       return { success: false, error: err.message };
     }
   };
@@ -210,6 +275,8 @@ export const SongsProvider = ({ children }) => {
     voteSong,
     incrementDownload,
     fetchSongs,
+    editSong,
+    deleteSong,
     filteredSongs: getFilteredSongs(),
   };
 

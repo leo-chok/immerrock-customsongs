@@ -85,10 +85,8 @@ const AddSongForm = ({ externalIsOpen, onToggle }) => {
 
     // Validation code - Replace with the real validation code
     // For now, using an example code
-    if (!formData.validationCode.trim()) {
-      newErrors.validationCode = 'Validation code is required';
-    } else if (formData.validationCode !== 'IMMERROCK2025') {
-      newErrors.validationCode = 'Incorrect validation code (available on Discord)';
+      if (!formData.validationCode.trim()) {
+        newErrors.validationCode = 'Upload password is required';
     }
 
     setErrors(newErrors);
@@ -112,6 +110,8 @@ const AddSongForm = ({ externalIsOpen, onToggle }) => {
     }
     // Convert type array to string
     songData.type = songData.type.join(', ');
+      // Attach the upload password expected by backend middleware
+      songData.password = validationCode;
     
     const result = await addSong(songData);
 

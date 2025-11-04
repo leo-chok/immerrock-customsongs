@@ -37,10 +37,11 @@
 
 .hero-description {
   color: #b0b0b0;
-  font-size: 1rem;
+  font-size: 1.125rem;
   line-height: 1.5;
   max-width: 700px;
   margin: 0 auto;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
 }
 
 .songs-section {

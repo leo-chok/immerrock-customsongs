@@ -223,6 +223,10 @@
   min-width: 120px;
   max-width: 260px;
   padding: 0.75rem 3rem 0.75rem 1rem;
+  height: 40px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
   background: rgba(10, 10, 10, 0.6);
   border: 2px solid rgba(255, 69, 0, 0.3);
   border-radius: 8px;
@@ -279,15 +283,14 @@
 /* Compteur de résultats */
 .results-count {
   width: 160px;
-  height: 60px;
-  margin-left: 0.2rem;
+  margin-left: 0.6rem;
   margin-right: 0.5rem;
   font-size: 1.08rem;
   font-weight: 600;
   color: #e0e0e0;
   white-space: nowrap;
   letter-spacing: 0.5px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: flex-start;
   z-index: 2;
@@ -302,7 +305,9 @@
   border-radius: 8px;
   background: rgba(10, 10, 10, 0.6);
   border: 2px solid rgba(255, 69, 0, 0.3);
-  padding: 0rem 1.5rem;
+  padding: 0.6rem 1.5rem;
+  height: 40px;
+  box-sizing: border-box;
 }
 
 .count-highlight {
@@ -322,20 +327,77 @@
   margin-left: auto;
   min-width: 120px;
   justify-self: end;
+  align-items: center;
+  justify-content: center;
   padding: 0.75rem 1.5rem;
   background: linear-gradient(135deg, #ff4500, #ff6b35);
   border: 2px solid rgba(255, 69, 0, 0.5);
   border-radius: 8px;
   color: #ffffff;
-  font-family: "Archivo Black", "Bebas Neue", sans-serif;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
   font-size: 1rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+}
+
+/* Responsive adjustments: hide knobs and add button on smaller screens */
+@media (max-width: 1024px) {
+  /* Hide decorative knobs but keep the LED; hide the Add button to simplify the header */
+  .knob-icons .css-knob {
+    display: none !important;
+  }
+  .knob-icons {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 0.6rem;
+  }
+  .knob-icons .led-indicator {
+    display: inline-block;
+    margin-left: 0.2rem;
+  }
+  .add-song-btn {
+    display: none !important;
+  }
+
+  /* Make the search area take most of the width */
+  .search-unified-section {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .search-wrapper-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .flame-search-input {
+    height: 40px;
+    padding-right: 2.2rem; /* keep some space for clear button */
+  }
+
+  /* Remove the numeric results count on smaller screens */
+  .results-count {
+    display: none !important;
+  }
+
+  /* Ensure clear button stays positioned correctly */
+  .clear-search-btn {
+    right: 0.8rem;
+  }
+
+  /* Slightly shrink labels to save space */
+  .search-label {
+    font-size: 0.9rem;
+  }
 }
 
 .add-song-btn:hover {
@@ -769,11 +831,30 @@
 
 /* No Results */
 .no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
   text-align: center;
   padding: 3rem 1rem;
   background: rgba(31, 31, 31, 0.5);
   border: 2px dashed rgba(255, 69, 0, 0.3);
   border-radius: 12px;
+}
+
+.no-results h3,
+.no-results p {
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+}
+
+.error-illustration {
+  display: block;
+  margin: 1.5rem auto 1rem auto;
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 24px #000a);
 }
 
 .no-results-icon {

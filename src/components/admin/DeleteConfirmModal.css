@@ -1,0 +1,77 @@
+.delete-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.delete-modal-content {
+  background: rgba(40, 40, 40, 0.97);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+  padding: 36px 32px 28px 32px;
+  min-width: 320px;
+  max-width: 95vw;
+  color: #ffd700;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.delete-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 2.2rem;
+  color: #ffd700;
+  cursor: pointer;
+}
+.delete-modal-content h2 {
+  font-family: "New Rocker", "Bebas Neue", sans-serif;
+  margin-bottom: 18px;
+  font-size: 1.5rem;
+  color: #ffd700;
+}
+.delete-modal-content p {
+  color: #fff;
+  font-size: 1.08rem;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.delete-modal-actions {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+.delete-cancel-btn {
+  background: #222;
+  color: #ffd700;
+  border: 1.5px solid #ffd700;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 1.08rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.delete-cancel-btn:hover {
+  background: #ffd700;
+  color: #222;
+}
+.delete-confirm-btn {
+  background: linear-gradient(90deg, #ff4d4d 60%, #b80000 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 1.08rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.delete-confirm-btn:hover {
+  background: linear-gradient(90deg, #ff1a1a 60%, #b80000 100%);
+}
