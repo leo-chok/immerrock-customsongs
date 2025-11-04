@@ -1,0 +1,93 @@
+.title-flames-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 250px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Logo flottant au-dessus */
+.floating-logo {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 130px;
+  width: auto;
+  filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.6));
+  animation: levitate 5s ease-in-out infinite;
+  z-index: 5;
+}
+
+@keyframes levitate {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0px);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-15px);
+  }
+}
+
+/* Titre flamboyant */
+.flame-title {
+  font-family: 'New Rocker', 'Bebas Neue', 'Impact', sans-serif;
+  font-size: 4rem;
+  margin: 100px 0 0 0;
+  color: #ffffff;
+  text-shadow: 
+    0 0 30px rgba(255, 69, 0, 0.8),
+    0 0 60px rgba(255, 69, 0, 0.4),
+    0 0 90px rgba(255, 69, 0, 0.2);
+  line-height: 1.2;
+  letter-spacing: 3px;
+  animation: glow 3s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 
+      0 0 20px rgba(255, 69, 0, 0.6),
+      0 0 40px rgba(255, 69, 0, 0.3),
+      0 0 60px rgba(255, 69, 0, 0.2);
+  }
+  100% {
+    text-shadow: 
+      0 0 30px rgba(255, 69, 0, 1),
+      0 0 60px rgba(255, 69, 0, 0.5),
+      0 0 90px rgba(255, 69, 0, 0.3);
+  }
+}
+
+/* Canvas des flammes (au-dessus de tout) */
+.flames-canvas {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .floating-logo {
+    height: 80px;
+  }
+
+  .flame-title {
+    font-size: 2rem;
+    margin-top: 70px;
+  }
+
+  .title-flames-container {
+    min-height: 180px;
+  }
+}

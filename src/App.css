@@ -1,7 +1,10 @@
 #root {
-  margin: 0 auto;
+  margin: 0;
   padding: 1rem;
   text-align: center;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .logo {
@@ -41,9 +44,9 @@
 }
 
 /* NOUVEAUX STYLES CI-DESSOUS pour le tableau et la pagination */
+/* App.css - Simplifié pour la nouvelle architecture */
 .App {
-  font-family: Arial, sans-serif;
-  color: #333;
+  width: 100%;
 }
 
 h1,
