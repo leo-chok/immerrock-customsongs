@@ -298,6 +298,8 @@ const SongList = () => {
             <option value="tuning-desc">Tuning (Z-A)</option>
             <option value="author-asc">Author (A-Z)</option>
             <option value="author-desc">Author (Z-A)</option>
+            <option value="createdAt-asc">Added (Oldest)</option>
+            <option value="createdAt-desc">Added (Newest)</option>
             <option value="popular-asc">Votes (Low-High)</option>
             <option value="popular-desc">Votes (High-Low)</option>
             <option value="downloads-asc">Downloads (Low-High)</option>
@@ -344,6 +346,16 @@ const SongList = () => {
             >
               Author{" "}
               {sortBy === "author" &&
+                (sortOrder === "asc" ? <FaArrowUp /> : <FaArrowDown />)}
+            </div>
+            <div
+              className={`header-cell date-header ${
+                sortBy === "createdAt" ? "active" : ""
+              }`}
+              onClick={() => handleColumnSort("createdAt")}
+            >
+              Added{" "}
+              {sortBy === "createdAt" &&
                 (sortOrder === "asc" ? <FaArrowUp /> : <FaArrowDown />)}
             </div>
             <div

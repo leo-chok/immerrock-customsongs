@@ -109,6 +109,12 @@ const SongCard = ({ song }) => {
           </p>
         </div>
 
+        <div className="song-cell date-cell">
+          <span className="song-date">
+            {song.createdAt ? new Date(song.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'}
+          </span>
+        </div>
+
         <div className="song-cell metadata-row-mobile">
           <span className="metadata-item">
             <span className="metadata-label">Type:</span> {getTypeLabel(song.type)}

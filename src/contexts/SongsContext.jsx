@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const SongsContext = createContext();
 
 // API URL - Change according to your environment
@@ -10,8 +11,8 @@ export const SongsProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('recent'); // 'recent', 'popular', 'downloads', 'title', 'artist', 'type', 'tuning', 'author'
-  const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
+  const [sortBy, setSortBy] = useState('createdAt'); // 'recent', 'popular', 'downloads', 'title', 'artist', 'type', 'tuning', 'author', 'createdAt'
+  const [sortOrder, setSortOrder] = useState('desc'); // 'asc' or 'desc'
   const [filterType, setFilterType] = useState('all'); // 'all', 'lead', 'rhythm', 'bass', 'ukulele', 'other'
   const [filterTuning, setFilterTuning] = useState('all'); // 'all' or specific tuning
 
@@ -97,7 +98,9 @@ export const SongsProvider = ({ children }) => {
         try {
           const errBody = await response.json();
           msg = errBody.message || msg;
-        } catch (e) {}
+        } catch {
+          // Ignore JSON parse error
+        }
         throw new Error(msg);
       }
       const newSong = await response.json();
@@ -125,8 +128,8 @@ export const SongsProvider = ({ children }) => {
         try {
           const errBody = await response.json();
           msg = errBody.message || msg;
-        } catch (e) {
-          // ignore parse error
+        } catch {
+          // Ignore JSON parse error
         }
         throw new Error(msg);
       }
@@ -152,7 +155,9 @@ export const SongsProvider = ({ children }) => {
         try {
           const errBody = await response.json();
           msg = errBody.message || msg;
-        } catch (e) {}
+        } catch {
+          // Ignore JSON parse error
+        }
         throw new Error(msg);
       }
       const updatedSong = await response.json();
@@ -240,6 +245,7 @@ export const SongsProvider = ({ children }) => {
           return sortOrder === 'asc' ? result : -result;
         });
         break;
+      case 'createdAt':
       case 'recent':
       default:
         filtered.sort((a, b) => {

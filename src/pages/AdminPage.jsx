@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAdminToken } from "../utils/auth";
 import { SongsContext } from "../contexts/SongsContext";
+import { getAdminToken } from "../utils/auth";
 import { useToast } from "../components/common/ToastProvider";
 import AdminSongTable from "../components/admin/AdminSongTable";
 import EditSongModal from "../components/admin/EditSongModal";
@@ -54,10 +54,10 @@ const AdminPage = () => {
     setEditSongData(null);
     if (success) {
       fetchSongs();
-      showToast("Chanson modifiée avec succès !", "success");
+      showToast("Song updated successfully!", "success");
     } else {
       showToast(
-        "Erreur lors de la modification : " + (error || "inconnue"),
+        "Error updating song: " + (error || "unknown"),
         "error"
       );
     }
@@ -83,10 +83,10 @@ const AdminPage = () => {
     setDeleteSongData(null);
     if (success) {
       fetchSongs();
-      showToast("Chanson supprimée avec succès !", "success");
+      showToast("Song deleted successfully!", "success");
     } else {
       showToast(
-        "Erreur lors de la suppression : " + (error || "inconnue"),
+        "Error deleting song: " + (error || "unknown"),
         "error"
       );
     }
