@@ -6,6 +6,7 @@ import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import AdminPage from './pages/AdminPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import './App.css';
 
 
@@ -22,6 +23,7 @@ function App() {
           </Layout>
         </Router>
       </SongsProvider>
+      <Analytics />
     </ToastProvider>
   );
 }
