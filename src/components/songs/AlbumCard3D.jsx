@@ -28,7 +28,8 @@ const AlbumCard3D = ({ artist, title, isInline = false }) => {
       );
 
       if (!response.ok) {
-        throw new Error('Album introuvable');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Album introuvable');
       }
 
       const data = await response.json();
