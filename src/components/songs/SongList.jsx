@@ -11,7 +11,7 @@ import "./SongList.css";
 
 const SONGS_PER_PAGE = 20;
 
-const SECRET_PHRASE = "letmerock"; // à personnaliser
+const SECRET_PHRASE = "letmerock"; // customize this
 
 const SongList = () => {
   const navigate = useNavigate();
@@ -48,17 +48,17 @@ const SongList = () => {
     }
   }, [loading]);
 
-  // Calcul de la pagination
+  // Pagination calculation
   const totalPages = Math.ceil(filteredSongs.length / SONGS_PER_PAGE);
   const startIndex = (currentPage - 1) * SONGS_PER_PAGE;
   const endIndex = startIndex + SONGS_PER_PAGE;
   const currentSongs = filteredSongs.slice(startIndex, endIndex);
 
-  // Reset page quand les filtres changent
+  // Reset page when filters change
   const handleSearchChange = (value) => {
     setSearchTerm(value);
     setCurrentPage(1);
-    // Détection phrase secrète
+    // Secret phrase detection
     if (value.trim().toLowerCase() === SECRET_PHRASE) {
       setShowAdminModal(true);
       setAdminError("");
@@ -66,7 +66,7 @@ const SongList = () => {
   };
 
   // Auth admin
-  // Utilise la variable d'env ou fallback Vercel prod
+  // Use env variable or fallback to production URL
   const API_URL =
     import.meta.env.VITE_API_URL ||
     "https://immerrock-customsongs-backend.onrender.com";
@@ -79,7 +79,7 @@ const SongList = () => {
         body: JSON.stringify({ password }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Erreur d'authentification");
+      if (!res.ok) throw new Error(data.message || "Authentication error");
       setAdminToken(data.token);
       setShowAdminModal(false);
       navigate("/admin");
@@ -89,7 +89,7 @@ const SongList = () => {
   };
 
   const handleColumnSort = (column) => {
-    // Si on clique sur la même colonne, inverser l'ordre
+    // If clicking the same column, reverse the order
     if (sortBy === column) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -109,7 +109,7 @@ const SongList = () => {
     setCurrentPage(1);
   };
 
-  // Obtenir la liste unique des tunings
+  // Get unique tunings list
   const getUniqueTunings = () => {
     const tunings = songs.map((song) => song.tuning);
     return [...new Set(tunings)].sort();
@@ -117,7 +117,7 @@ const SongList = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    // Scroll jusqu'au début de la liste
+    // Scroll to the top of the list
     const songListElement = document.getElementById("song-list-anchor");
     if (songListElement) {
       songListElement.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -137,7 +137,7 @@ const SongList = () => {
       <div className="song-list-container">
         <div className="error-message">
           <span className="error-icon">⚠️</span>
-          <h3>Erreur de chargement</h3>
+          <h3>Loading Error</h3>
           <img
             src="/eli_no_result.png"
             alt="Error Illustration"
@@ -157,7 +157,7 @@ const SongList = () => {
         onSubmit={handleAdminLogin}
         error={adminError}
       />
-      {/* Formulaire Add Song (toujours rendu, contrôlé par showAddForm) */}
+      {/* Add Song form (always rendered, controlled by showAddForm) */}
       <AddSongForm
         externalIsOpen={showAddForm}
         onToggle={(value) =>
@@ -165,7 +165,7 @@ const SongList = () => {
         }
       />
 
-      {/* Section Search unifiée avec compteur et bouton Add */}
+      {/* Unified Search section with counter and Add button */}
       <div id="song-list-anchor" className="search-unified-section">
         <span className="search-label">Search:</span>
         <div className="search-wrapper-input">
@@ -223,9 +223,9 @@ const SongList = () => {
         </button>
       </div>
 
-      {/* Section unifiée Filtres + Sort */}
+      {/* Unified Filters + Sort section */}
       <div className="unified-controls-section">
-        {/* Filtres TYPE et TUNING */}
+        {/* TYPE and TUNING Filters */}
         <div className="filters-row">
           <span className="filter-by-label">Filter by:</span>
           <div className="filters-wrapper">
@@ -265,7 +265,7 @@ const SongList = () => {
           </div>
         </div>
 
-        {/* Cordes de guitare séparateur */}
+        {/* Guitar strings separator */}
         <div className="guitar-strings">
           <div className="guitar-string"></div>
           <div className="guitar-string"></div>
@@ -275,11 +275,11 @@ const SongList = () => {
           <div className="guitar-string"></div>
         </div>
 
-        {/* En-têtes de colonnes cliquables */}
+        {/* Clickable column headers */}
         <div className="sort-row">
           <span className="sort-by-label">Sort by:</span>
 
-          {/* Dropdown pour mobile/tablette */}
+          {/* Dropdown for mobile/tablet */}
           <select
             className="sort-select-mobile"
             value={`${sortBy}-${sortOrder}`}
@@ -306,7 +306,7 @@ const SongList = () => {
             <option value="downloads-desc">Downloads (High-Low)</option>
           </select>
 
-          {/* Headers cliquables pour desktop */}
+          {/* Clickable headers for desktop */}
           <div className="table-header">
             <div
               className={`header-cell title-header ${
@@ -383,7 +383,7 @@ const SongList = () => {
         </div>
       </div>
 
-      {/* Liste des chansons */}
+      {/* Song list */}
       {currentSongs.length > 0 ? (
         <>
           <div className="song-table">

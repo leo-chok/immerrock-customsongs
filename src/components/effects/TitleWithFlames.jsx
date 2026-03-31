@@ -137,7 +137,7 @@ const TitleWithFlames = () => {
       </a>
       {/* Titre */}
       <h1 ref={titleRef} className="flame-title">
-        Custom Songs Library
+        Immerock - Custom Songs
       </h1>
       
       {/* Canvas des particules de feu (au-dessus de tout) */}

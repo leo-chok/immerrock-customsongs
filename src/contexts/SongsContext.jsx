@@ -112,7 +112,7 @@ export const SongsProvider = ({ children }) => {
     }
   };
 
-  // Voter pour une chanson
+  // Vote for a song
   const voteSong = async (songId, voteType) => {
     try {
       // backend expects { type: 'up' | 'down' }
@@ -144,7 +144,7 @@ export const SongsProvider = ({ children }) => {
     }
   };
 
-  // Incrémenter le compteur de téléchargements
+  // Increment download counter
   const incrementDownload = async (songId) => {
     try {
       const response = await fetch(`${API_URL}/api/songs/${songId}/download`, {
@@ -171,7 +171,7 @@ export const SongsProvider = ({ children }) => {
     }
   };
 
-  // Filtrer et trier les chansons
+  // Filter and sort songs
   const getFilteredSongs = () => {
     let filtered = [...songs];
 
