@@ -6,7 +6,7 @@ import { useSongs } from "../../hooks/useSongs";
 import { useSongsFilter } from "../../hooks/useSongsFilter";
 import SongCard from "./SongCard";
 import AddSongForm from "./AddSongForm";
-import SkeletonCard from "../common/SkeletonCard";
+import Loading from "../common/Loading";
 import SearchBar from "./SearchBar";
 import FiltersRow from "./FiltersRow";
 import SortHeader from "./SortHeader";
@@ -87,9 +87,7 @@ const SongList = () => {
   if (loading) {
     return (
       <div className="song-list-container">
-        <div className="song-list-header grid-skeleton">
-           {[...Array(6)].map((_, i) => <SkeletonCard key={i} />)}
-        </div>
+        <Loading />
       </div>
     );
   }

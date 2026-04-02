@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
         {children}
       </main>
       <footer className="app-footer">
-        <p>© 2026 Immerock Custom Songs - Made by Leochok</p>
+        <p>© 2026 Immerrock Custom Songs - Made by Leochok</p>
       </footer>
     </div>
   );
