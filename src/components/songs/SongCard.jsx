@@ -1,17 +1,13 @@
-import { useState, useRef } from 'react';
+import { useState, memo } from 'react';
 import { useSongs } from '../../hooks/useSongs';
 import { useVoting } from '../../hooks/useVoting';
 import { FaArrowUp, FaArrowDown, FaDownload } from 'react-icons/fa';
-import AlbumCard3D from './AlbumCard3D';
 import './SongCard.css';
 
-const SongCard = ({ song }) => {
+const SongCard = memo(({ song }) => {
   const { voteSong, incrementDownload } = useSongs();
   const { hasVoted, getVoteType, recordVote } = useVoting();
-  const [isHovered, setIsHovered] = useState(false);
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
-  const cardRef = useRef(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   
   const userVote = getVoteType(song._id);
   const score = song.upvotes - song.downvotes;
@@ -24,38 +20,21 @@ const SongCard = ({ song }) => {
     }
   };
 
-  const handleDownload = async () => {
+  const handleDownload = async (e) => {
+    e.preventDefault();
+    e.stopPropagation(); // Évite l'expansion mobile au click sur download
     await incrementDownload(song._id);
     window.open(song.link, '_blank');
   };
 
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-
-    const card = cardRef.current;
-    const rect = card.getBoundingClientRect();
-    
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    // Rotation très légère : max ±3 degrés
-    const rotX = ((y - centerY) / centerY) * -3;
-    const rotY = ((x - centerX) / centerX) * 3;
-    
-    setRotateX(rotX);
-    setRotateY(rotY);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setRotateX(0);
-    setRotateY(0);
+  const handleVoteLocal = (voteType, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleVote(voteType);
   };
 
   const getTypeLabel = (type) => {
+    if (!type) return '';
     const types = type.split(',').map(t => t.trim());
     return types.map(t => {
       switch (t.toLowerCase()) {
@@ -71,24 +50,32 @@ const SongCard = ({ song }) => {
 
   return (
     <div 
-      ref={cardRef}
-      className={`song-card-row ${isHovered ? 'expanded' : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${isHovered ? 1.02 : 1})`,
-      }}
+      className={`song-card-row ${isExpanded ? 'expanded' : ''}`}
+      onClick={() => setIsExpanded(!isExpanded)}
     >
+      {/* Zone Image Album (Statique à gauche sur Desktop) */}
+      <div className="desktop-cover-zone">
+        <img 
+          src={song.albumImageMedium || '/unknow_vinyle.png'} 
+          alt={song.title} 
+          className="static-cover-image"
+        />
+        <div className="cover-gradient-overlay"></div>
+      </div>
+
+      {/* Mode Mobile (Top Banner) */}
+      <div className="mobile-top-cover">
+        <img 
+          src={song.albumImageMedium || '/unknow_vinyle.png'} 
+          alt={song.title} 
+          className="mobile-cover-image"
+          loading="lazy"
+        />
+        <div className="mobile-cover-gradient"></div>
+      </div>
+      
       <div className="song-card-content">
         <div className="song-cell info-cell">
-          <div className={`album-card-wrapper ${isHovered ? 'visible' : 'hidden'}`}>
-            <AlbumCard3D 
-              artist={song.artist}
-              title={song.title}
-              isInline={true}
-            />
-          </div>
           <h3 className="song-title">{song.title}</h3>
           <p className="song-artist">{song.artist}</p>
         </div>
@@ -115,27 +102,25 @@ const SongCard = ({ song }) => {
           </span>
         </div>
 
+        {/* Info mobiles additionnelles (accordéon) */}
         <div className="song-cell metadata-row-mobile">
-          <span className="metadata-item">
+          <div className="metadata-item">
             <span className="metadata-label">Type:</span> {getTypeLabel(song.type)}
-          </span>
-          <span className="metadata-separator">•</span>
-          <span className="metadata-item">
+          </div>
+          <div className="metadata-item">
             <span className="metadata-label">Tuning:</span> {song.tuning}
-          </span>
-          <span className="metadata-separator">•</span>
-          <span className="metadata-item">
+          </div>
+          <div className="metadata-item">
             <span className="metadata-label">By</span> <span className="author-name-mobile">{song.author}</span>
-          </span>
+          </div>
         </div>
 
         <div className="song-cell votes-cell">
           <div className={`vote-section ${userVote === 'upvote' ? 'voted-up' : userVote === 'downvote' ? 'voted-down' : ''}`}>
             <button
               className={`vote-btn upvote ${userVote === 'upvote' ? 'active' : ''}`}
-              onClick={() => handleVote('upvote')}
+              onClick={(e) => handleVoteLocal('upvote', e)}
               disabled={hasVoted(song._id)}
-              title={hasVoted(song._id) ? 'You already voted' : 'Upvote'}
             >
               <FaArrowUp className="vote-icon" />
               <span className="vote-count">{song.upvotes}</span>
@@ -145,9 +130,8 @@ const SongCard = ({ song }) => {
             </div>
             <button
               className={`vote-btn downvote ${userVote === 'downvote' ? 'active' : ''}`}
-              onClick={() => handleVote('downvote')}
+              onClick={(e) => handleVoteLocal('downvote', e)}
               disabled={hasVoted(song._id)}
-              title={hasVoted(song._id) ? 'You already voted' : 'Downvote'}
             >
               <FaArrowDown className="vote-icon" />
               <span className="vote-count">{song.downvotes}</span>
@@ -173,6 +157,6 @@ const SongCard = ({ song }) => {
       </div>
     </div>
   );
-};
+});
 
 export default SongCard;

@@ -1,284 +1,147 @@
-/* Song Card Row - Format Tableau AVEC EXPANSION ET EFFET 3D */
+/* Song Card Row - Layout Dual-State Premium */
 .song-card-row {
-  background: linear-gradient(135deg, rgba(31, 31, 31, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
-  border: 1px solid rgba(255, 69, 0, 0.3);
+  background: linear-gradient(135deg, rgba(31, 31, 31, 0.95) 0%, rgba(26, 26, 26, 0.9) 100%);
+  border: 1px solid rgba(255, 69, 0, 0.2);
   border-radius: 8px;
+  margin-bottom: 0.75rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: visible;
-  backdrop-filter: blur(10px);
-  margin-bottom: 0.75rem;
+  backdrop-filter: blur(8px);
   cursor: pointer;
-  height: auto;
-  min-height: 80px;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  padding: 1rem 1.5rem;
-  transform-style: preserve-3d;
-  will-change: transform;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5),
-              inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  min-height: 60px; /* Carte plus fine */
+  padding: 0; /* On gère le padding intérieurement */
 }
 
-/* Contenu principal (grille) */
-.song-card-content {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1.3fr 180px 100px 130px 110px 150px 85px 140px;
-  gap: 0.75rem;
-  align-items: center;
+/* --- ZONE COVER DESKTOP --- */
+.desktop-cover-zone {
+  width: 170px !important; /* Plus large, rectangulaire */
+  min-width: 170px;
+  align-self: stretch;
+  height: auto;
+  position: relative;
+  overflow: hidden; /* Important pour ne pas deborder en mode normal */
+  flex-shrink: 0;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: translateZ(20px);
+  border-radius: 8px 0 0 8px;
+  background: #111;
 }
 
-/* Effet de glow subtil au hover - comme AlbumCard3D */
-.song-card-row::before {
-  content: '';
-  position: absolute;
-  inset: -8px;
-  background: linear-gradient(135deg, #ff4500, #ff8c00, #dc143c);
-  border-radius: 12px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  filter: blur(20px);
-  z-index: -1;
-  pointer-events: none;
-}
 
-.song-card-row:hover::before {
-  opacity: 0.4;
-}
 
-/* Effet shine - reflet glass comme AlbumCard3D */
-.song-card-row::after {
-  content: '';
+.static-cover-image {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 8px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.15) 0%,
-    rgba(255, 255, 255, 0) 60%
-  );
-  opacity: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px 0 0 8px;
   transition: opacity 0.3s ease;
-  pointer-events: none;
-  transform: translateZ(50px);
 }
 
-.song-card-row:hover::after {
-  opacity: 1;
-}
-
-/* État EXPANDED - Card agrandie avec album */
-.song-card-row.expanded {
-  min-height: 240px;
-  padding: 1.5rem 2rem;
-  border-color: rgba(255, 69, 0, 0.8);
-  box-shadow: 0 8px 30px rgba(255, 69, 0, 0.5);
-  z-index: 10;
-  transform: scale(1.1);
-}
-
-/* Effet de VAGUE - Cards adjacentes grandissent progressivement */
-/* Note: On utilise scale simple car la card principale gère déjà la perspective */
-
-/* Cards immédiatement adjacentes : +30% */
-.song-card-row:hover + .song-card-row,
-.song-card-row:has(+ .song-card-row:hover) {
-  transform: scale(1.3);
-  box-shadow: 0 6px 20px rgba(255, 69, 0, 0.3);
-  z-index: 8;
-}
-
-/* Cards à 2 positions de distance : +15% */
-.song-card-row:hover + .song-card-row + .song-card-row,
-.song-card-row:has(+ .song-card-row + .song-card-row:hover) {
-  transform: scale(1.15);
-  box-shadow: 0 4px 15px rgba(255, 69, 0, 0.15);
-  z-index: 6;
-}
-
-/* Wrapper de l'album - en absolute overlay, ne prend plus de place dans le flow */
-.album-card-wrapper {
+.cover-gradient-overlay {
   position: absolute;
-  top: 50%;
-  left: 2.5rem;
-  transform: translateY(-50%) translateZ(80px) scale(0.8);
-  width: 200px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: visible;
-  z-index: 20;
+  inset: 0;
+  /* Dégradé qui arrive jusqu'au titre avec la même couleur que le fond */
+  background: linear-gradient(to right, transparent 60%, rgba(31, 31, 31, 1) 100%);
   pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-/* État caché - invisible */
-.album-card-wrapper.hidden {
-  opacity: 0;
-  transform: translateY(-50%) translateZ(80px) translateX(-30px) scale(0.7);
+/* --- ÉTAT SURVOL (DESKTOP) --- */
+@media (min-width: 851px) {
+  .song-card-row:hover {
+    border-color: rgba(255, 69, 0, 0.6);
+    box-shadow: 0 5px 25px rgba(255, 69, 0, 0.15);
+    background: linear-gradient(135deg, rgba(35, 35, 35, 0.95) 0%, rgba(30, 30, 30, 0.9) 100%);
+  }
 }
 
-/* État visible - apparaît en overlay 3D */
-.album-card-wrapper.visible {
-  opacity: 1;
-  transform: translateY(-50%) translateZ(80px) translateX(1rem) scale(1);
-  pointer-events: auto;
+/* --- CONTENU PRINCIPAL --- */
+.song-card-content {
+  flex: 1;
+  padding: 0.5rem 1.5rem;
+  display: grid;
+  /* Normal: Grille horizontale */
+  grid-template-columns: 1.5fr 150px 100px 150px 140px 130px 80px 130px;
+  gap: 0.75rem;
+  align-items: center;
+  transition: all 0.4s ease;
 }
 
-/* Cells */
+/* Cellules */
 .song-cell {
   display: flex;
   align-items: center;
+  min-width: 0;
 }
 
-/* Metadata row - cachée sur desktop */
-.metadata-row-mobile {
-  display: none;
-}
-
-/* Download count mobile - caché sur desktop */
-.download-count-mobile {
-  display: none;
-}
-
-/* Type Cell */
-.type-cell {
-  justify-content: flex-start;
-  padding-left: 1rem;
-}
-
-.song-type-text {
-  background: rgba(255, 140, 0, 0.2);
-  color: #ffaa66;
-  font-weight: 600;
-  font-size: 0.8125rem;
-  text-transform: capitalize;
-  letter-spacing: 0.3px;
-  padding: 0.35rem 0.7rem;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 140, 0, 0.3);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-/* Info Cell */
 .info-cell {
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.25rem;
-  min-width: 0;
-  position: relative;
+  justify-content: center;
+  gap: 0.15rem; /* Plus compact */
 }
 
 .song-title {
-  color: #ffffff;
-  font-family: 'New Rocker', 'Bebas Neue', sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
+  color: #fff;
+  font-family: 'New Rocker', sans-serif;
+  font-size: 1.15rem;
   margin: 0;
-  line-height: 1.3;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
   width: 100%;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  text-align: left;
 }
 
 .song-artist {
   color: #ff6b35;
-  font-size: 0.8125rem;
+  font-size: 0.85rem;
   font-weight: 600;
   margin: 0;
-  text-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  text-align: left;
 }
 
-/* Cacher titre et artiste au hover */
-.song-card-row:hover .song-title,
-.song-card-row:hover .song-artist {
-  opacity: 0;
-  transform: translateY(-10px);
+.song-artist {
+  color: #ff6b35;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
 }
 
-/* Tuning Cell */
-.tuning-cell {
-  justify-content: center;
+/* Styles des badges */
+.song-type-text {
+  background: rgba(255, 140, 0, 0.2);
+  color: #ffaa66;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(255, 140, 0, 0.3);
 }
 
 .song-tuning {
   background: rgba(255, 215, 0, 0.1);
   color: #ffd700;
-  padding: 0.35rem 0.7rem;
+  padding: 0.3rem 0.6rem;
   border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.8125rem;
+  font-size: 0.8rem;
   border: 1px solid rgba(255, 215, 0, 0.3);
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
 }
 
-/* Author Cell */
-.author-cell {
-  justify-content: flex-start;
-}
+.author-name { color: #fff; font-weight: 600; }
+.song-date { color: #888; font-size: 0.8rem; }
 
-.song-author {
-  color: #b0b0b0;
-  font-size: 0.8125rem;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.author-name {
-  color: #ffffff;
-  font-weight: 500;
-}
-
-/* Date Cell */
-.date-cell {
-  justify-content: center;
-}
-
-.song-date {
-  color: #b0b0b0;
-  font-size: 0.8125rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Votes Cell */
-.votes-cell {
-  justify-content: center;
-}
-
+/* Votes */
 .vote-section {
   display: flex;
-  align-items: center;
   gap: 0.4rem;
-  padding: 0.3rem 0.5rem;
-  background: rgba(10, 10, 10, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.3rem 0.6rem;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -286,441 +149,139 @@
 .vote-btn {
   background: transparent;
   border: none;
-  color: #b0b0b0;
+  color: #888;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.3rem 0.5rem;
-  border-radius: 15px;
-  transition: all 0.3s ease-in-out;
-  font-size: 0.8125rem;
-  font-weight: 600;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  position: relative;
+  z-index: 10;
 }
 
-.vote-btn:not(:disabled):hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: scale(1.1);
-}
+.vote-btn.upvote.active { color: #00ff00; }
+.vote-btn.downvote.active { color: #ff0000; }
+.score { font-weight: 700; min-width: 30px; text-align: center; }
+.score.positive { color: #00ff00; }
+.score.negative { color: #ff0000; }
 
-.vote-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
+.download-count { color: #ff8855; font-weight: 600; font-size: 0.9rem; margin-left: 0.4rem; }
 
-.vote-btn.upvote.active,
-.vote-btn.upvote:not(:disabled):hover {
-  color: #00ff00;
-  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-}
-
-.vote-btn.downvote.active,
-.vote-btn.downvote:not(:disabled):hover {
-  color: #ff0000;
-  text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-}
-
-.vote-icon {
-  font-size: 1rem;
-}
-
-.vote-count {
-  font-size: 0.8125rem;
-}
-
-.score {
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  min-width: 35px;
-  text-align: center;
-}
-
-.score.positive {
-  color: #00ff00;
-  background: rgba(0, 255, 0, 0.1);
-}
-
-.score.negative {
-  color: #ff0000;
-  background: rgba(255, 0, 0, 0.1);
-}
-
-.score.neutral {
-  color: #b0b0b0;
-  background: rgba(176, 176, 176, 0.1);
-}
-
-/* Downloads Cell */
-.downloads-cell {
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.download-icon {
-  color: #ff6b35;
-  font-size: 1rem;
-}
-
-.download-count {
-  color: #b0b0b0;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-/* Action Cell */
-.action-cell {
-  justify-content: flex-end;
-}
-
+/* Action */
 .download-btn {
-  background: linear-gradient(135deg, #ff4500 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, #ff4500, #ff8c00);
   border: none;
-  color: #ffffff;
-  padding: 0.5rem 0.8rem;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
   border-radius: 6px;
-  font-size: 0.8125rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  box-shadow: 0 2px 10px rgba(255, 69, 0, 0.3);
-  white-space: nowrap;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  width: auto;
+  position: relative;
+  z-index: 10;
 }
 
 .download-btn:hover {
-  background: linear-gradient(135deg, #ff6b35 0%, #ff4500 100%);
-  box-shadow: 0 0 15px rgba(255, 69, 0, 0.6);
   transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 69, 0, 0.4);
 }
 
-.download-btn:active {
-  transform: translateY(0);
+/* Cache metadata mobile sur desktop */
+.metadata-row-mobile, .download-count-mobile {
+  display: none;
 }
 
-.btn-icon {
-  font-size: 1rem;
+/* Mobile top cover caché sur desktop par défaut */
+.mobile-top-cover {
+  display: none;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
+/* --- RESPONSIVE DESKTOP INTERMÉDIAIRE --- */
+@media (max-width: 1440px) {
   .song-card-content {
-    grid-template-columns: 1.2fr 160px 90px 120px 100px 140px 75px 130px;
-    gap: 0.6rem;
-  }
-
-  .song-title {
-    font-size: 1rem;
-  }
-
-  .song-artist {
-    font-size: 0.875rem;
+    grid-template-columns: 1.5fr 120px 90px 140px 130px 130px 60px 130px;
   }
 }
 
-@media (max-width: 1024px) {
-  /* DÉSACTIVER l'effet d'expansion et d'album sur mobile/tablette */
-  .album-card-wrapper {
-    display: none !important;
-  }
-
-  .song-card-row.expanded {
-    min-height: auto;
-    padding: 1.25rem 1.5rem;
-  }
-
-  /* Désactiver l'effet de vague sur mobile */
-  .song-card-row:hover + .song-card-row,
-  .song-card-row:has(+ .song-card-row:hover),
-  .song-card-row:hover + .song-card-row + .song-card-row,
-  .song-card-row:has(+ .song-card-row + .song-card-row:hover) {
-    transform: none !important;
-    box-shadow: none;
-  }
-
-  /* Layout mobile classique */
-  .song-card-row {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.25rem;
-  }
-
+@media (max-width: 1280px) {
   .song-card-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "info"
-      "metadata"
-      "votes"
-      "action";
-    gap: 1rem;
-    padding: 1.25rem 1.5rem;
+    grid-template-columns: 1.5fr 110px 80px 120px 110px 130px 120px;
+  }
+  .date-cell { display: none; }
+}
+
+@media (max-width: 1100px) {
+  .song-card-content {
+    grid-template-columns: 1.5fr 100px 130px 120px 120px;
+  }
+  .tuning-cell, .downloads-cell { display: none; }
+}
+
+/* --- MODE MOBILE ACCORDÉON --- */
+@media (max-width: 850px) {
+  .desktop-cover-zone { display: none; }
+  .mobile-top-cover { 
+    display: block; 
+    width: 100%; 
+    height: 110px; /* ~50% de la hauteur totale de base */
+    overflow: hidden; 
+    position: relative; 
+  }
+  .mobile-cover-image { width: 100%; height: 100%; object-fit: cover; }
+  .mobile-cover-gradient { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 60%, rgba(26, 26, 26, 1) 100%); }
+
+  .song-card-row { 
+    flex-direction: column; 
+    align-items: stretch; /* Essentiel pour que les enfants fassent 100% de large */
+    max-height: 220px; 
+    overflow: hidden; 
+    padding: 0; 
+  }
+  .song-card-row.expanded { max-height: 800px; transform: none; }
+
+  .song-card-content { 
+    display: flex; 
+    flex-direction: column; 
+    padding: 1rem 1.25rem; /* Padding reduit en haut/bas */
+    width: 100%; 
+    gap: 0.5rem; /* Gap reduit */
+    grid-template-columns: none; /* Désactive la grille */
   }
 
-  /* Titre et artiste en haut - CENTRÉ */
-  .info-cell {
-    grid-area: info;
-    align-items: center;
-    text-align: center;
-    gap: 0.5rem;
-  }
+  .song-card-row.expanded .song-card-content { padding: 1rem 1.25rem; }
 
-  .song-title {
-    font-size: 1.75rem;
-    white-space: normal;
-    line-height: 1.2;
-    width: 100%;
-  }
+  .info-cell { align-items: center; text-align: center; }
+  .song-title { font-size: 1.5rem; white-space: normal; }
+  .song-artist { font-size: 1.1rem; }
 
-  .song-artist {
-    font-size: 1.125rem;
-    white-space: normal;
-    width: 100%;
-  }
+  /* Cache les cellules desktop superflues */
+  .type-cell, .tuning-cell, .author-cell, .date-cell, .downloads-cell { display: none; }
 
-  /* Cacher les cellules desktop */
-  .type-cell,
-  .tuning-cell,
-  .author-cell {
-    display: none;
-  }
-
-  /* Afficher la ligne metadata pour mobile - CENTRÉ */
+  /* Affiche metadata mobile */
   .metadata-row-mobile {
-    grid-area: metadata;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    align-items: center;
     justify-content: center;
-    font-size: 0.9375rem;
-    color: #b0b0b0;
+    gap: 1rem;
+    color: #888;
+    font-size: 0.95rem;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
   }
 
-  .metadata-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
+  .song-card-row.expanded .metadata-row-mobile { opacity: 1; height: auto; }
 
-  .metadata-label {
-    color: #ff8855;
-    font-weight: 600;
-  }
+  .votes-cell, .action-cell { opacity: 0; height: 0; overflow: hidden; transition: all 0.3s ease; }
+  .song-card-row.expanded .votes-cell, 
+  .song-card-row.expanded .action-cell { opacity: 1; height: auto; }
 
-  .metadata-separator {
-    color: #666;
-  }
-
-  .author-name-mobile {
-    color: #ffaa66;
-    font-weight: 600;
-  }
-
-  /* Votes - CENTRÉ */
-  .votes-cell {
-    grid-area: votes;
-    justify-content: center;
-  }
-
-  /* Cacher la cellule downloads séparée */
-  .downloads-cell {
-    display: none;
-  }
-
-  /* Bouton download avec nombre de téléchargements à gauche */
-  .action-cell {
-    grid-area: action;
-    justify-content: center;
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0;
-  }
-
-  .download-btn {
-    width: 100%;
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  /* Compteur de téléchargements à gauche du bouton - mobile uniquement */
-  .download-count-mobile {
-    position: absolute;
-    left: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #ffaa66;
-    font-weight: 600;
-    font-size: 1rem;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .download-icon-mobile {
-    font-size: 1rem;
-    color: #ff8855;
-  }
+  .action-cell { justify-content: center; gap: 1rem; }
+  .download-count-mobile { display: flex; align-items: center; gap: 0.5rem; color: #ff8855; font-weight: 700; }
+  .download-btn { width: 100%; }
 }
-
-@media (max-width: 768px) {
-  .song-card-row {
-    padding: 1rem 1.25rem;
-    gap: 0.875rem;
-  }
-
-  /* Titre et artiste - tailles ajustées pour tablette */
-  .song-title {
-    font-size: 1.5rem;
-  }
-
-  .song-artist {
-    font-size: 1rem;
-  }
-
-  /* Metadata row */
-  .metadata-row-mobile {
-    font-size: 0.875rem;
-    gap: 0.5rem;
-  }
-
-  /* Votes */
-  .vote-section {
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
-  }
-
-  .vote-btn {
-    padding: 0.4rem 0.6rem;
-  }
-
-  .vote-icon {
-    font-size: 0.875rem;
-  }
-
-  .vote-count {
-    font-size: 0.8125rem;
-  }
-
-  .score {
-    font-size: 1rem;
-  }
-
-  /* Download count mobile */
-  .download-count-mobile {
-    left: 1.25rem;
-    font-size: 0.9375rem;
-    gap: 0.4rem;
-  }
-
-  .download-icon-mobile {
-    font-size: 0.9375rem;
-  }
-
-  /* Bouton download */
-  .download-btn {
-    padding: 0.875rem 1.25rem;
-    font-size: 0.9375rem;
-  }
-
-  .btn-icon {
-    font-size: 0.9375rem;
-  }
-}
-
-@media (max-width: 425px) {
-  .song-card-row {
-    padding: 0.875rem 1rem;
-    gap: 0.75rem;
-  }
-
-  /* Titre et artiste - encore plus compacts pour mobile */
-  .song-title {
-    font-size: 1.25rem;
-    line-height: 1.3;
-  }
-
-  .song-artist {
-    font-size: 0.9375rem;
-  }
-
-  /* Metadata row - plus compact */
-  .metadata-row-mobile {
-    font-size: 0.8125rem;
-    gap: 0.5rem;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .metadata-separator {
-    display: none;
-  }
-
-  .metadata-item {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* Votes - plus compact */
-  .vote-section {
-    gap: 0.4rem;
-    padding: 0.4rem 0.6rem;
-    flex-wrap: wrap;
-  }
-
-  .vote-btn {
-    padding: 0.35rem 0.5rem;
-    font-size: 0.8125rem;
-  }
-
-  .vote-icon {
-    font-size: 0.75rem;
-  }
-
-  .vote-count {
-    font-size: 0.75rem;
-  }
-
-  .score {
-    font-size: 0.9375rem;
-    min-width: 35px;
-  }
-
-  /* Download count mobile - plus petit */
-  .download-count-mobile {
-    left: 0.75rem;
-    font-size: 0.875rem;
-    gap: 0.35rem;
-  }
-
-  .download-icon-mobile {
-    font-size: 0.875rem;
-  }
-
-  /* Bouton download - plus compact */
-  .download-btn {
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem;
-  }
-
-  .btn-icon {
-    font-size: 0.875rem;
-  }
-
-  .btn-text {
-    font-size: 0.875rem;
-  }
-}
-
