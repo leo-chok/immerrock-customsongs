@@ -86,7 +86,7 @@ const SongList = () => {
 
   if (loading) {
     return (
-      <div className="song-list-container">
+      <div className="song-list-container fade-in">
         <Loading />
       </div>
     );
@@ -94,7 +94,7 @@ const SongList = () => {
 
   if (error) {
     return (
-      <div className="song-list-container">
+      <div className="song-list-container fade-in">
         <div className="error-message">
           <span className="error-icon">⚠️</span>
           <h3>Loading Error</h3>

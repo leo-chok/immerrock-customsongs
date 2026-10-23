@@ -19,11 +19,11 @@
   height: 130px;
   width: auto;
   filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.6));
-  animation: levitate 5s ease-in-out infinite;
+  animation: logoLevitate 5s ease-in-out infinite;
   z-index: 5;
 }
 
-@keyframes levitate {
+@keyframes logoLevitate {
   0%, 100% {
     transform: translateX(-50%) translateY(0px);
   }
